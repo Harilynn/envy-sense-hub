@@ -304,14 +304,14 @@ const Index = () => {
                 title="Vibration"
                 data={historicalData.vibration}
                 unit=""
-                color="hsl(var(--destructive))"
+                color="hsl(var(--chart-3))"
                 threshold={{ max: 20000 }}
               />
               <SensorChart
                 title="Current"
                 data={historicalData.current}
                 unit="A"
-                color="hsl(var(--secondary))"
+                color="hsl(var(--chart-5))"
                 threshold={{ max: 2.5 }}
               />
             </div>
