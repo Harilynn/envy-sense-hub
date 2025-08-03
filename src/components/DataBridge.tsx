@@ -1,20 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Play, Save, Database } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Copy, Download, Upload, Wifi, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/lib/supabase";
 
 interface DataBridgeProps {
   onDataReceived: (data: any) => void;
 }
 
 export const DataBridge = ({ onDataReceived }: DataBridgeProps) => {
+  const [isListening, setIsListening] = useState(false);
   const [serialData, setSerialData] = useState("");
-  const [isSaving, setIsSaving] = useState(false);
+  const [apiEndpoint, setApiEndpoint] = useState("http://localhost:3001/api/sensor-data");
+  const [webhookUrl, setWebhookUrl] = useState("");
   const { toast } = useToast();
+
+  useEffect(() => {
+    // Generate webhook URL for this session
+    const sessionId = Math.random().toString(36).substring(7);
+    setWebhookUrl(`${window.location.origin}/api/webhook/${sessionId}`);
+  }, []);
 
   const parseSerialData = (rawData: string) => {
     try {
@@ -45,69 +53,103 @@ export const DataBridge = ({ onDataReceived }: DataBridgeProps) => {
         }
       });
 
-      return data;
-    } catch (error) {
-      console.error("Error parsing serial data:", error);
-      return null;
-    }
-  };
-
-  const saveSensorData = async (data: any) => {
-    try {
-      setIsSaving(true);
-      const { error } = await supabase
-        .from('sensor_readings')
-        .insert([{
-          ...data,
-          timestamp: new Date().toISOString(),
-          device_id: 'ESP32-001'
-        }]);
-
-      if (error) throw error;
-
-      toast({
-        title: "Data Saved",
-        description: "Sensor data saved to database successfully",
-      });
-    } catch (error) {
-      console.error("Error saving data:", error);
-      toast({
-        title: "Save Error", 
-        description: "Failed to save data to database",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const handleSerialDataSubmit = async () => {
-    if (serialData.trim()) {
-      const parsedData = parseSerialData(serialData);
-      
-      if (parsedData && Object.keys(parsedData).length > 0) {
-        parsedData.timestamp = new Date();
-        
-        // Update the dashboard
-        onDataReceived(parsedData);
-        
-        // Save to database
-        await saveSensorData(parsedData);
-        
-        setSerialData("");
-        
+      if (Object.keys(data).length > 0) {
+        data.timestamp = new Date();
+        onDataReceived(data);
         toast({
-          title: "Data Processed",
-          description: "Sensor data updated and saved successfully",
-        });
-      } else {
-        toast({
-          title: "Parse Error",
-          description: "No valid sensor data found in input",
-          variant: "destructive",
+          title: "Data Received",
+          description: "Sensor data updated successfully",
         });
       }
+    } catch (error) {
+      console.error("Error parsing serial data:", error);
+      toast({
+        title: "Parse Error",
+        description: "Failed to parse sensor data",
+        variant: "destructive",
+      });
     }
+  };
+
+  const handleSerialDataSubmit = () => {
+    if (serialData.trim()) {
+      parseSerialData(serialData);
+      setSerialData("");
+    }
+  };
+
+  const copyWebhookUrl = () => {
+    navigator.clipboard.writeText(webhookUrl);
+    toast({
+      title: "Copied",
+      description: "Webhook URL copied to clipboard",
+    });
+  };
+
+  const downloadArduinoCode = () => {
+    const arduinoCode = `
+// ESP32 WiFi HTTP Client for Industrial IoT Monitor
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <ArduinoJson.h>
+
+const char* ssid = "YOUR_WIFI_SSID";
+const char* password = "YOUR_WIFI_PASSWORD";
+const char* serverURL = "${apiEndpoint}";
+
+void sendSensorData(float temp, float hum, float current, float vibration, float gas) {
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    http.begin(serverURL);
+    http.addHeader("Content-Type", "application/json");
+    
+    DynamicJsonDocument doc(1024);
+    doc["temperature"] = temp;
+    doc["humidity"] = hum;
+    doc["current"] = current;
+    doc["vibration"] = vibration;
+    doc["gasEmission"] = gas;
+    doc["timestamp"] = millis();
+    doc["deviceId"] = "ESP32-001";
+    
+    String jsonString;
+    serializeJson(doc, jsonString);
+    
+    int httpResponseCode = http.POST(jsonString);
+    
+    if (httpResponseCode > 0) {
+      String response = http.getString();
+      Serial.println("Data sent successfully");
+    } else {
+      Serial.println("Error sending data");
+    }
+    
+    http.end();
+  }
+}
+
+// Add this to your main loop after reading sensors
+void loop() {
+  // ... your existing sensor reading code ...
+  
+  // Send data every 30 seconds
+  static unsigned long lastSend = 0;
+  if (millis() - lastSend > 30000) {
+    sendSensorData(temperature, humidity, current, vibration, gasPPM);
+    lastSend = millis();
+  }
+  
+  delay(500);
+}
+`;
+
+    const blob = new Blob([arduinoCode], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'esp32_wifi_client.ino';
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -115,60 +157,86 @@ export const DataBridge = ({ onDataReceived }: DataBridgeProps) => {
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Database className="h-5 w-5 text-primary" />
-            <CardTitle>Manual Data Input</CardTitle>
+            <Wifi className="h-5 w-5 text-primary" />
+            <CardTitle>Live Data Bridge</CardTitle>
           </div>
-          <Badge variant="secondary">
-            Manual Mode
+          <Badge variant={isListening ? "default" : "secondary"}>
+            {isListening ? "Listening" : "Manual Mode"}
           </Badge>
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Manual Serial Data Input */}
         <div className="space-y-3">
-          <h4 className="font-medium">Wokwi Serial Monitor Data</h4>
+          <h4 className="font-medium">Manual Serial Data Input</h4>
           <p className="text-sm text-muted-foreground">
-            Paste your Wokwi serial monitor output here to analyze real sensor data:
+            Paste Wokwi serial monitor output here to test with live data:
           </p>
           <Textarea
             value={serialData}
             onChange={(e) => setSerialData(e.target.value)}
-            placeholder="==== Sensor Readings ====
-Temperature: 23.5 °C
-Humidity: 45.2 %
-Current: 1.8 A
-Vibration: 12000
-Gas Emission: 150.0 ppm"
-            className="min-h-[120px] font-mono text-xs"
+            placeholder="Paste serial monitor output here..."
+            className="min-h-[100px] font-mono text-xs"
           />
-          <Button 
-            onClick={handleSerialDataSubmit} 
-            disabled={!serialData.trim() || isSaving}
-            className="w-full"
-          >
-            {isSaving ? (
-              <>
-                <Save className="h-4 w-4 mr-2 animate-spin" />
-                Saving...
-              </>
-            ) : (
-              <>
-                <Play className="h-4 w-4 mr-2" />
-                Process & Save Data
-              </>
-            )}
+          <Button onClick={handleSerialDataSubmit} disabled={!serialData.trim()}>
+            <Upload className="h-4 w-4 mr-2" />
+            Parse & Update
           </Button>
+        </div>
+
+        {/* API Configuration */}
+        <div className="space-y-3">
+          <h4 className="font-medium">API Configuration</h4>
+          <div className="space-y-2">
+            <label className="text-sm font-medium">API Endpoint</label>
+            <div className="flex gap-2">
+              <Input
+                value={apiEndpoint}
+                onChange={(e) => setApiEndpoint(e.target.value)}
+                placeholder="http://localhost:3001/api/sensor-data"
+              />
+              <Button variant="outline" size="sm" onClick={copyWebhookUrl}>
+                <Copy className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Integration Instructions */}
+        <div className="space-y-3">
+          <h4 className="font-medium">Integration Options</h4>
+          <div className="grid gap-3 md:grid-cols-2">
+            <div className="p-3 border rounded-lg space-y-2">
+              <h5 className="font-medium text-sm">Option 1: WiFi Integration</h5>
+              <p className="text-xs text-muted-foreground">
+                Download Arduino code to send data via WiFi
+              </p>
+              <Button size="sm" variant="outline" onClick={downloadArduinoCode}>
+                <Download className="h-3 w-3 mr-1" />
+                Download Code
+              </Button>
+            </div>
+            <div className="p-3 border rounded-lg space-y-2">
+              <h5 className="font-medium text-sm">Option 2: Serial Bridge</h5>
+              <p className="text-xs text-muted-foreground">
+                Use a Python script to bridge serial to HTTP
+              </p>
+              <Button size="sm" variant="outline" disabled>
+                <Settings className="h-3 w-3 mr-1" />
+                Setup Guide
+              </Button>
+            </div>
+          </div>
         </div>
 
         {/* Instructions */}
         <div className="p-4 bg-muted/50 rounded-lg space-y-2">
-          <h5 className="font-medium text-sm">How to use:</h5>
+          <h5 className="font-medium text-sm">Setup Instructions:</h5>
           <ol className="text-xs text-muted-foreground space-y-1 ml-4 list-decimal">
-            <li>Run your Wokwi simulation</li>
-            <li>Copy the sensor readings from the serial monitor</li>
-            <li>Paste the data in the text area above</li>
-            <li>Click "Process & Save Data" to update dashboard and save to database</li>
-            <li>View real-time analysis and predictions below</li>
+            <li>Copy serial output from Wokwi and paste above for testing</li>
+            <li>For live integration, download the WiFi client code</li>
+            <li>Modify the code with your WiFi credentials and API endpoint</li>
+            <li>Flash to your ESP32 for automatic data transmission</li>
           </ol>
         </div>
       </CardContent>
