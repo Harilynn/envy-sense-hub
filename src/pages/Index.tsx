@@ -67,99 +67,7 @@ const Index = () => {
 
   const [isConnected, setIsConnected] = useState(true);
 
-  // Simulate real-time data updates
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const newData: SensorData = {
-        temperature: 20 + Math.random() * 40 + Math.sin(Date.now() / 60000) * 8,
-        humidity: 40 + Math.random() * 40 + Math.cos(Date.now() / 45000) * 10,
-        gasEmission: 100 + Math.random() * 300 + Math.sin(Date.now() / 30000) * 50,
-        vibration: 8000 + Math.random() * 15000 + Math.sin(Date.now() / 25000) * 3000,
-        current: 1.0 + Math.random() * 2.0 + Math.cos(Date.now() / 35000) * 0.5,
-        timestamp: new Date()
-      };
-
-      setSensorData(newData);
-
-      // Update historical data (keep last 20 points)
-      const timeStr = newData.timestamp.toLocaleTimeString('en-US', { 
-        hour12: false, 
-        hour: '2-digit', 
-        minute: '2-digit' 
-      });
-
-      setHistoricalData(prev => ({
-        temperature: [...prev.temperature.slice(-19), { timestamp: timeStr, value: newData.temperature }],
-        humidity: [...prev.humidity.slice(-19), { timestamp: timeStr, value: newData.humidity }],
-        gasEmission: [...prev.gasEmission.slice(-19), { timestamp: timeStr, value: newData.gasEmission }],
-        vibration: [...prev.vibration.slice(-19), { timestamp: timeStr, value: newData.vibration }],
-        current: [...prev.current.slice(-19), { timestamp: timeStr, value: newData.current }]
-      }));
-
-      // Check for alerts based on ESP32 thresholds
-      if (newData.temperature > 60 && !alerts.some(a => a.title.includes("Overheat"))) {
-        const newAlert: Alert = {
-          id: Date.now().toString(),
-          type: "danger",
-          title: "Overheat Alert",
-          message: `Temperature exceeded 60°C (Current: ${newData.temperature.toFixed(1)}°C)`,
-          timestamp: new Date(),
-          sensor: "Temperature Sensor"
-        };
-        setAlerts(prev => [newAlert, ...prev]);
-      }
-
-      if (newData.current > 2.5 && !alerts.some(a => a.title.includes("Current Spike"))) {
-        const newAlert: Alert = {
-          id: Date.now().toString(),
-          type: "danger",
-          title: "Current Spike Alert",
-          message: `Current exceeded safe threshold (Current: ${newData.current.toFixed(1)} A)`,
-          timestamp: new Date(),
-          sensor: "Current Sensor"
-        };
-        setAlerts(prev => [newAlert, ...prev]);
-      }
-
-      if (newData.vibration > 20000 && !alerts.some(a => a.title.includes("Vibration"))) {
-        const newAlert: Alert = {
-          id: Date.now().toString(),
-          type: "danger",
-          title: "High Vibration Alert",
-          message: `Excessive vibrations detected (Current: ${newData.vibration.toFixed(0)})`,
-          timestamp: new Date(),
-          sensor: "Vibration Sensor"
-        };
-        setAlerts(prev => [newAlert, ...prev]);
-      }
-
-      if (newData.gasEmission > 400 && !alerts.some(a => a.title.includes("Gas"))) {
-        const newAlert: Alert = {
-          id: Date.now().toString(),
-          type: "danger",
-          title: "High Gas Emission",
-          message: `Gas concentration critical (Current: ${newData.gasEmission.toFixed(1)} ppm)`,
-          timestamp: new Date(),
-          sensor: "Gas Sensor"
-        };
-        setAlerts(prev => [newAlert, ...prev]);
-      }
-
-      if (newData.humidity > 80 && !alerts.some(a => a.title.includes("Humidity"))) {
-        const newAlert: Alert = {
-          id: Date.now().toString(),
-          type: "warning",
-          title: "High Humidity",
-          message: `Humidity exceeds normal range (Current: ${newData.humidity.toFixed(1)}%)`,
-          timestamp: new Date(),
-          sensor: "Humidity Sensor"
-        };
-        setAlerts(prev => [newAlert, ...prev]);
-      }
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [alerts]);
+  // No automatic simulation - only manual data input
 
   const getTemperatureStatus = (temp: number): "good" | "warning" | "danger" => {
     if (temp > 60) return "danger";
@@ -326,6 +234,78 @@ const Index = () => {
         {/* Data Bridge */}
         <DataBridge onDataReceived={(data) => {
           setSensorData(prev => ({ ...prev, ...data }));
+          
+          // Update historical data when manual data is received
+          const timeStr = data.timestamp.toLocaleTimeString('en-US', { 
+            hour12: false, 
+            hour: '2-digit', 
+            minute: '2-digit' 
+          });
+
+          setHistoricalData(prev => ({
+            temperature: [...prev.temperature.slice(-19), { timestamp: timeStr, value: data.temperature }],
+            humidity: [...prev.humidity.slice(-19), { timestamp: timeStr, value: data.humidity }],
+            gasEmission: [...prev.gasEmission.slice(-19), { timestamp: timeStr, value: data.gasEmission }],
+            vibration: [...prev.vibration.slice(-19), { timestamp: timeStr, value: data.vibration }],
+            current: [...prev.current.slice(-19), { timestamp: timeStr, value: data.current }]
+          }));
+
+          // Generate alerts for manual data
+          const newAlerts: Alert[] = [];
+          if (data.temperature > 60) {
+            newAlerts.push({
+              id: `temp-${Date.now()}`,
+              type: "danger",
+              title: "Overheat Alert",
+              message: `Temperature exceeded 60°C (Current: ${data.temperature.toFixed(1)}°C)`,
+              timestamp: new Date(),
+              sensor: "Temperature Sensor"
+            });
+          }
+          if (data.current > 2.5) {
+            newAlerts.push({
+              id: `current-${Date.now()}`,
+              type: "danger", 
+              title: "Current Spike Alert",
+              message: `Current exceeded safe threshold (Current: ${data.current.toFixed(1)} A)`,
+              timestamp: new Date(),
+              sensor: "Current Sensor"
+            });
+          }
+          if (data.vibration > 20000) {
+            newAlerts.push({
+              id: `vibration-${Date.now()}`,
+              type: "danger",
+              title: "High Vibration Alert", 
+              message: `Excessive vibrations detected (Current: ${data.vibration.toFixed(0)})`,
+              timestamp: new Date(),
+              sensor: "Vibration Sensor"
+            });
+          }
+          if (data.gasEmission > 400) {
+            newAlerts.push({
+              id: `gas-${Date.now()}`,
+              type: "danger",
+              title: "High Gas Emission",
+              message: `Gas concentration critical (Current: ${data.gasEmission.toFixed(1)} ppm)`,
+              timestamp: new Date(),
+              sensor: "Gas Sensor"
+            });
+          }
+          if (data.humidity > 80) {
+            newAlerts.push({
+              id: `humidity-${Date.now()}`,
+              type: "warning",
+              title: "High Humidity",
+              message: `Humidity exceeds normal range (Current: ${data.humidity.toFixed(1)}%)`,
+              timestamp: new Date(),
+              sensor: "Humidity Sensor"
+            });
+          }
+          
+          if (newAlerts.length > 0) {
+            setAlerts(prev => [...newAlerts, ...prev].slice(0, 10));
+          }
         }} />
 
         {/* AI Analysis */}

@@ -14,7 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      sensor_readings: {
+        Row: {
+          created_at: string
+          current: number | null
+          device_id: string
+          gas_emission: number | null
+          humidity: number | null
+          id: string
+          temperature: number | null
+          timestamp: string
+          vibration: number | null
+        }
+        Insert: {
+          created_at?: string
+          current?: number | null
+          device_id: string
+          gas_emission?: number | null
+          humidity?: number | null
+          id?: string
+          temperature?: number | null
+          timestamp?: string
+          vibration?: number | null
+        }
+        Update: {
+          created_at?: string
+          current?: number | null
+          device_id?: string
+          gas_emission?: number | null
+          humidity?: number | null
+          id?: string
+          temperature?: number | null
+          timestamp?: string
+          vibration?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
