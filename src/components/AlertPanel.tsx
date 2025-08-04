@@ -4,15 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Bell, X, AlertTriangle, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface Alert {
-  id: string;
-  type: "warning" | "danger" | "info";
-  title: string;
-  message: string;
-  timestamp: string;
-  sensor?: string;
-  acknowledged?: boolean;
-}
+import { Alert } from "@/contexts/SensorDataContext";
 
 interface AlertPanelProps {
   alerts: Alert[];
@@ -43,7 +35,7 @@ const getAlertBadge = (type: Alert["type"]) => {
 };
 
 export const AlertPanel = ({ alerts, onAcknowledge, onDismiss }: AlertPanelProps) => {
-  const activeAlerts = alerts.filter(alert => !alert.acknowledged);
+  const activeAlerts = alerts.filter(alert => !alert.isAcknowledged);
 
   return (
     <Card>

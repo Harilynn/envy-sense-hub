@@ -23,16 +23,7 @@ interface SensorData {
   timestamp: Date;
 }
 
-interface Alert {
-  id: string;
-  type: "warning" | "danger" | "info";
-  title: string;
-  message: string;
-  timestamp: Date;
-  sensor?: string;
-  acknowledged?: boolean;
-  fixed?: boolean;
-}
+import { Alert } from "@/contexts/SensorDataContext";
 
 interface AnalysisReportProps {
   sensorData: SensorData;
@@ -99,8 +90,8 @@ export const AnalysisReport = ({ sensorData, historicalData, alerts }: AnalysisR
     }
   };
 
-  const activeAlerts = alerts.filter(alert => !alert.acknowledged && !alert.fixed);
-  const resolvedAlerts = alerts.filter(alert => alert.fixed);
+  const activeAlerts = alerts.filter(alert => !alert.isAcknowledged && !alert.isFixed);
+  const resolvedAlerts = alerts.filter(alert => alert.isFixed);
   const totalAlerts = alerts.length;
 
   const overallHealth = Object.values(metrics).reduce((acc, metric) => {

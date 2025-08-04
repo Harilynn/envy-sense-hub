@@ -96,6 +96,7 @@ const Dashboard = () => {
 
   const activeAlerts = getActiveAlerts();
   const acknowledgedAlerts = getAcknowledgedAlerts();
+  const allAlertsFixed = acknowledgedAlerts.length > 0 && acknowledgedAlerts.every(alert => alert.isFixed);
 
   return (
     <div className="min-h-screen bg-background">
@@ -105,7 +106,7 @@ const Dashboard = () => {
         {isDashboardRoot && (
           <>
             {/* System Status Banner */}
-            {activeAlerts.length === 0 ? (
+            {activeAlerts.length === 0 && allAlertsFixed ? (
               <div className="bg-success/10 border border-success/20 rounded-lg p-4 mb-6 animate-fade-in">
                 <div className="flex items-center justify-center gap-3">
                   <div className="flex items-center justify-center w-12 h-12 bg-success/20 rounded-full">
@@ -464,7 +465,7 @@ const Dashboard = () => {
               </TabsContent>
 
               <TabsContent value="reports">
-                <AnalysisReport sensorData={localSensorData} historicalData={historicalData} alerts={[...activeAlerts, ...acknowledgedAlerts]} />
+                <AnalysisReport sensorData={localSensorData} historicalData={historicalData} alerts={activeAlerts} />
               </TabsContent>
             </Tabs>
           </>

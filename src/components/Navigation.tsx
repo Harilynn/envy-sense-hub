@@ -63,8 +63,8 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                 key={item.name}
                 to={item.path}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-primary",
-                  isActive(item.path) ? "text-primary" : "text-muted-foreground"
+                  "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground",
+                  isActive(item.path) ? "text-primary bg-accent/50" : "text-muted-foreground"
                 )}
               >
                 {item.name}
@@ -77,10 +77,10 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                 <Button 
                   variant="ghost" 
                   className={cn(
-                    "text-sm font-medium transition-colors",
+                    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground",
                     location.pathname.startsWith('/dashboard') 
-                      ? "text-primary hover:text-primary/80" 
-                      : "text-muted-foreground hover:text-primary"
+                      ? "text-primary bg-accent/50" 
+                      : "text-muted-foreground"
                   )}
                 >
                   Dashboard
