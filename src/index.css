@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Vibrant Light IoT Theme with Beautiful Colors */
+    /* Tech-focused Theme with Teal/Aqua Colors */
     --background: 210 40% 98%;
     --foreground: 222.2 84% 4.9%;
 
@@ -18,7 +18,7 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 270 95% 65%;
+    --primary: 197 93% 46%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 162 85% 55%;
@@ -27,7 +27,7 @@ All colors MUST be HSL.
     --muted: 210 40% 94%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 300 85% 70%;
+    --accent: 185 84% 39%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 84.2% 60.2%;
@@ -45,18 +45,20 @@ All colors MUST be HSL.
     --info: 199 89% 48%;
     --info-foreground: 210 40% 98%;
 
-    /* Beautiful Vibrant Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(270 95% 65%), hsl(300 85% 70%));
-    --gradient-hero: linear-gradient(135deg, hsl(270 95% 65%) 0%, hsl(300 85% 70%) 30%, hsl(162 85% 55%) 70%, hsl(142 76% 36%) 100%);
+    /* Tech-focused Gradients with Teal/Aqua */
+    --gradient-primary: linear-gradient(135deg, hsl(197 93% 46%), hsl(185 84% 39%));
+    --gradient-hero: linear-gradient(135deg, hsl(197 93% 46%) 0%, hsl(185 84% 39%) 30%, hsl(162 85% 55%) 70%, hsl(142 76% 36%) 100%);
     --gradient-success: linear-gradient(135deg, hsl(142 76% 36%), hsl(162 85% 55%));
     --gradient-green: linear-gradient(135deg, hsl(162 85% 55%), hsl(142 76% 36%));
-    --gradient-purple: linear-gradient(135deg, hsl(270 95% 65%), hsl(280 90% 70%));
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(210 40% 98%));
+    --gradient-teal: linear-gradient(135deg, hsl(197 93% 46%), hsl(185 84% 39%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(197 93% 98%));
+    --gradient-tech: linear-gradient(135deg, hsl(197 93% 46%), hsl(185 84% 39%), hsl(162 85% 55%));
 
-    /* Enhanced Shadows */
-    --shadow-glow: 0 0 30px hsl(270 95% 65% / 0.4);
+    /* Tech-focused Shadows */
+    --shadow-glow: 0 0 30px hsl(197 93% 46% / 0.4);
     --shadow-card: 0 8px 25px hsl(217 19% 5% / 0.6);
-    --shadow-accent: 0 0 40px hsl(300 85% 70% / 0.3);
+    --shadow-accent: 0 0 40px hsl(185 84% 39% / 0.3);
+    --shadow-tech: 0 10px 40px hsl(197 93% 46% / 0.3);
 
     --radius: 0.75rem;
 
@@ -87,7 +89,7 @@ All colors MUST be HSL.
     --popover: 217 19% 12%;
     --popover-foreground: 220 14% 96%;
 
-    --primary: 280 100% 65%;
+    --primary: 197 93% 46%;
     --primary-foreground: 220 14% 96%;
 
     --secondary: 210 50% 45%;
@@ -96,7 +98,7 @@ All colors MUST be HSL.
     --muted: 215 16% 16%;
     --muted-foreground: 218 11% 65%;
 
-    --accent: 320 85% 60%;
+    --accent: 185 84% 39%;
     --accent-foreground: 220 14% 96%;
 
     --destructive: 0 84% 60%;
@@ -104,7 +106,7 @@ All colors MUST be HSL.
 
     --border: 215 16% 20%;
     --input: 215 16% 20%;
-    --ring: 280 100% 65%;
+    --ring: 197 93% 46%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -155,5 +157,20 @@ All colors MUST be HSL.
   border: 1px solid hsl(38, 92%, 50%);
   position: relative;
   z-index: 1;
+}
+
+/* Dramatic hover effects */
+.hover-dramatic {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-dramatic:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 40px hsl(var(--primary) / 0.3);
+}
+
+.hover-tech-glow:hover {
+  box-shadow: 0 0 30px hsl(var(--primary) / 0.6), 0 0 60px hsl(var(--accent) / 0.4);
+  transform: scale(1.05);
 }
 

@@ -100,7 +100,7 @@ export default function HomePage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <Button size="lg" asChild className="group hover-scale bg-white text-primary hover:bg-white/90">
+              <Button size="lg" asChild className="group hover-dramatic hover-tech-glow bg-white text-primary hover:bg-white/90 transition-all duration-300">
                 <Link to="/dashboard">
                   <Play className="mr-2 h-4 w-4" />
                   Get Started
@@ -111,7 +111,7 @@ export default function HomePage() {
                 variant="outline" 
                 size="lg" 
                 asChild 
-                className="hover-scale border-white/30 bg-white/10 text-white hover:bg-accent hover:text-white transition-all duration-300"
+                className="hover-dramatic hover-tech-glow border-white/30 bg-white/10 text-white hover:bg-accent hover:text-white transition-all duration-300"
               >
                 <Link to="/learn-more">
                   <BookOpen className="mr-2 h-4 w-4" />
@@ -124,7 +124,7 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 bg-muted/30">
+      <section id="features" className="py-20 bg-gradient-to-r from-background via-primary/5 to-background">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
@@ -139,7 +139,7 @@ export default function HomePage() {
             {features.map((feature, index) => (
               <Card 
                 key={feature.title} 
-                className="hover-scale group hover:shadow-lg transition-all duration-300 animate-fade-in border-0 bg-card/50 backdrop-blur"
+                className="hover-scale group hover:shadow-lg transition-all duration-300 animate-fade-in border-0 bg-gradient-card backdrop-blur shadow-tech"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <CardHeader>
@@ -187,7 +187,7 @@ export default function HomePage() {
                 ))}
               </div>
               
-              <Button size="lg" asChild className="hover-scale bg-success text-white hover:bg-success/90">
+              <Button size="lg" asChild className="hover-dramatic hover-tech-glow bg-success text-white hover:bg-success/90 transition-all duration-300">
                 <Link to="/dashboard">
                   Try Our Dashboard
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -234,7 +234,7 @@ export default function HomePage() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-muted/30">
+      <section id="about" className="py-20 bg-gradient-to-r from-background via-accent/5 to-background">
         <div className="max-w-4xl mx-auto px-4 text-center animate-fade-in">
           <h2 className="text-3xl sm:text-4xl font-bold mb-8">
             About SmartMonitor
@@ -263,6 +263,39 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Contact Section */}
+      <section className="py-20 bg-gradient-tech">
+        <div className="max-w-4xl mx-auto px-4 text-center animate-fade-in">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
+            Contact Us for Professional Services
+          </h2>
+          <p className="text-xl text-white/90 mb-8">
+            Get expert consultation and implementation support for your industrial IoT needs
+          </p>
+          <div className="grid gap-6 md:grid-cols-3 mb-8">
+            <div className="bg-white/10 backdrop-blur p-6 rounded-lg border border-white/20">
+              <h3 className="text-lg font-bold text-white mb-2">Consultation</h3>
+              <p className="text-white/80 text-sm">Expert analysis of your monitoring requirements</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur p-6 rounded-lg border border-white/20">
+              <h3 className="text-lg font-bold text-white mb-2">Implementation</h3>
+              <p className="text-white/80 text-sm">Full system setup and configuration support</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur p-6 rounded-lg border border-white/20">
+              <h3 className="text-lg font-bold text-white mb-2">Support</h3>
+              <p className="text-white/80 text-sm">Ongoing maintenance and technical assistance</p>
+            </div>
+          </div>
+          <Button 
+            size="lg" 
+            className="hover-dramatic hover-tech-glow bg-white text-primary hover:bg-white/90 transition-all duration-300"
+          >
+            Get Professional Support
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10">
         <div className="max-w-4xl mx-auto px-4 text-center animate-fade-in">
@@ -275,7 +308,7 @@ export default function HomePage() {
             <Button 
               size="lg" 
               asChild 
-              className="hover-scale bg-accent text-white hover:bg-white hover:text-accent border border-accent transition-all duration-300 transform hover:scale-105"
+              className="hover-dramatic hover-tech-glow bg-accent text-white hover:bg-white hover:text-accent border border-accent transition-all duration-300"
             >
               <Link to="/dashboard">
                 Experience SmartMonitor

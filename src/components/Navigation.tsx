@@ -74,8 +74,8 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                     key={item.name}
                     onClick={() => scrollToSection('features')}
                     className={cn(
-                      "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/10",
-                      location.pathname === "/" && location.hash === "#features" ? "text-muted-foreground bg-accent" : "text-muted-foreground"
+                      "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
+                      location.pathname === "/" && location.hash === "#features" ? "text-foreground bg-accent" : "text-muted-foreground"
                     )}
                   >
                     {item.name}
@@ -88,8 +88,8 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                     key={item.name}
                     onClick={() => scrollToSection('about')}
                     className={cn(
-                      "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/10",
-                      location.pathname === "/" && location.hash === "#about" ? "text-muted-foreground bg-accent" : "text-muted-foreground"
+                      "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
+                      location.pathname === "/" && location.hash === "#about" ? "text-foreground bg-accent" : "text-muted-foreground"
                     )}
                   >
                     {item.name}
@@ -101,8 +101,8 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                   key={item.name}
                   to={item.path}
                   className={cn(
-                    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/10",
-                    isActive(item.path) ? "text-muted-foreground bg-accent" : "text-muted-foreground"
+                    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
+                    isActive(item.path) ? "text-foreground bg-accent" : "text-muted-foreground"
                   )}
                 >
                   {item.name}
@@ -116,7 +116,7 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                 <Button 
                   variant="ghost" 
                   className={cn(
-                    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/10",
+                    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
                     location.pathname.startsWith('/dashboard') 
                       ? "text-muted-foreground bg-accent" 
                       : "text-muted-foreground"
