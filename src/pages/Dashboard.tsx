@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useSensorData } from "@/contexts/SensorDataContext";
 import { 
   Thermometer, 
   Droplets, 
@@ -406,11 +407,7 @@ const Dashboard = () => {
               </TabsContent>
 
               <TabsContent value="history">
-                <AlertHistory 
-                  acknowledgedAlerts={acknowledgedAlerts}
-                  fixedAlerts={fixedAlerts}
-                  onMarkFixed={handleFixAlert}
-                />
+                <AlertHistory />
               </TabsContent>
 
               <TabsContent value="analysis">
@@ -425,13 +422,7 @@ const Dashboard = () => {
         )}
 
         <Routes>
-          <Route path="/alerts" element={
-            <AlertHistory 
-              acknowledgedAlerts={acknowledgedAlerts}
-              fixedAlerts={fixedAlerts}
-              onMarkFixed={handleFixAlert}
-            />
-          } />
+          <Route path="/alerts" element={<AlertHistory />} />
         </Routes>
       </div>
     </div>

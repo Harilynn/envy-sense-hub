@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { Navigation } from "@/components/Navigation";
+import { useSensorData } from "@/contexts/SensorDataContext";
 import { 
   Activity, 
   Shield, 
@@ -12,10 +14,15 @@ import {
   Zap,
   CheckCircle,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Play,
+  BookOpen
 } from "lucide-react";
 
 export default function HomePage() {
+  const { getActiveAlerts } = useSensorData();
+  const activeAlerts = getActiveAlerts();
+
   const features = [
     {
       icon: <Activity className="h-8 w-8" />,
@@ -64,37 +71,45 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Navigation activeAlerts={activeAlerts.length} />
+      
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-accent/5">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+      <section className="relative overflow-hidden bg-gradient-hero">
+        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-float" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
+        </div>
         <div className="relative max-w-7xl mx-auto px-4 py-20 sm:py-24 lg:py-32">
           <div className="text-center space-y-8 animate-fade-in">
-            <Badge variant="secondary" className="animate-scale-in">
+            <Badge variant="secondary" className="animate-scale-in bg-white/10 text-white border-white/20 hover:bg-white/20">
               <Sparkles className="h-3 w-3 mr-1" />
               Next-Generation Industrial IoT
             </Badge>
             
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent leading-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white leading-tight">
               Smart Monitoring for
               <br />
               <span className="text-gradient">Healthier Machines</span>
             </h1>
             
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
               Transform your industrial operations with AI-powered monitoring. 
               Prevent costly downtime, optimize performance, and ensure the longevity 
               of your critical equipment with real-time insights.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <Button size="lg" asChild className="group hover-scale">
+              <Button size="lg" asChild className="group hover-scale bg-white text-primary hover:bg-white/90">
                 <Link to="/dashboard">
-                  View Dashboard
+                  <Play className="mr-2 h-4 w-4" />
+                  Start Monitoring
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" asChild className="hover-scale">
+              <Button variant="outline" size="lg" asChild className="hover-scale border-white/30 text-white hover:bg-white/10">
                 <Link to="#features">
+                  <BookOpen className="mr-2 h-4 w-4" />
                   Learn More
                 </Link>
               </Button>
@@ -167,37 +182,43 @@ export default function HomePage() {
                 ))}
               </div>
               
-              <Button size="lg" asChild className="hover-scale">
+              <Button size="lg" asChild className="hover-scale bg-success text-white hover:bg-success/90">
                 <Link to="/dashboard">
-                  Start Monitoring Now
+                  View Live Status
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </div>
             
             <div className="relative animate-scale-in">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl blur-2xl" />
-              <Card className="relative bg-card/50 backdrop-blur border-0 p-8">
-                <div className="grid gap-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">System Health</span>
-                    <Badge variant="secondary" className="bg-green-500/10 text-green-500">
-                      Excellent
-                    </Badge>
+              <div className="absolute inset-0 bg-gradient-success rounded-2xl blur-2xl opacity-20" />
+              <Card className="relative bg-success/5 backdrop-blur border border-success/20 p-8">
+                <div className="flex items-center justify-center mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-success/20 rounded-full">
+                      <CheckCircle className="h-8 w-8 text-success animate-pulse" />
+                    </div>
+                    <div className="text-center">
+                      <h3 className="text-xl font-bold text-success">System Operating Normally</h3>
+                      <p className="text-sm text-success/80">All sensors are within safe operating parameters</p>
+                    </div>
+                    <div className="p-3 bg-success/20 rounded-full">
+                      <CheckCircle className="h-6 w-6 text-success" />
+                    </div>
                   </div>
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">Temperature</span>
-                      <span className="text-sm font-mono">23.5°C</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">Efficiency</span>
-                      <span className="text-sm font-mono text-green-500">91.8%</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">Uptime</span>
-                      <span className="text-sm font-mono text-green-500">94.2%</span>
-                    </div>
+                </div>
+                <div className="grid gap-4">
+                  <div className="flex justify-between items-center p-3 bg-success/10 rounded-lg">
+                    <span className="text-sm font-medium">Temperature</span>
+                    <span className="text-sm font-mono text-success">23.5°C ✓</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-success/10 rounded-lg">
+                    <span className="text-sm font-medium">System Efficiency</span>
+                    <span className="text-sm font-mono text-success">91.8% ✓</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-success/10 rounded-lg">
+                    <span className="text-sm font-medium">Uptime</span>
+                    <span className="text-sm font-mono text-success">94.2% ✓</span>
                   </div>
                 </div>
               </Card>
@@ -234,9 +255,9 @@ export default function HomePage() {
           </div>
           
           <div className="mt-12">
-            <Button size="lg" asChild className="hover-scale">
+            <Button size="lg" asChild className="hover-scale bg-gradient-primary text-white">
               <Link to="/dashboard">
-                Experience SmartMonitor
+                Try Demo
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
@@ -253,9 +274,9 @@ export default function HomePage() {
           <p className="text-xl text-muted-foreground mb-8">
             Join the future of industrial monitoring today
           </p>
-          <Button size="lg" asChild className="hover-scale">
+          <Button size="lg" asChild className="hover-scale bg-gradient-primary text-white">
             <Link to="/dashboard">
-              Get Started Now
+              Get Started Free
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>

@@ -2,26 +2,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckCircle, Clock, AlertTriangle, Info, Wrench } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { CheckCircle, Clock, AlertTriangle, Info, Wrench, Phone, Mail, User, Lightbulb } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSensorData, type Alert } from "@/contexts/SensorDataContext";
 
-interface Alert {
-  id: string;
-  type: "warning" | "danger" | "info";
-  title: string;
-  message: string;
-  timestamp: Date;
-  sensor?: string;
-  acknowledged?: boolean;
-  fixed?: boolean;
-  suggestion?: string;
-}
-
-interface AlertHistoryProps {
-  acknowledgedAlerts: Alert[];
-  fixedAlerts: Alert[];
-  onMarkFixed: (alertId: string) => void;
-}
+interface AlertHistoryProps {}
 
 const getAlertIcon = (type: Alert["type"]) => {
   switch (type) {
@@ -45,7 +31,12 @@ const getAlertBadge = (type: Alert["type"]) => {
   }
 };
 
-export const AlertHistory = ({ acknowledgedAlerts, fixedAlerts, onMarkFixed }: AlertHistoryProps) => {
+export const AlertHistory = ({}: AlertHistoryProps) => {
+  const { getAcknowledgedAlerts, markAlertFixed } = useSensorData();
+  const alerts = getAcknowledgedAlerts();
+  const acknowledgedAlerts = alerts.filter(alert => alert.isAcknowledged && !alert.isFixed);
+  const fixedAlerts = alerts.filter(alert => alert.isFixed);
+
   const AlertCard = ({ alert, showFixButton = false }: { alert: Alert; showFixButton?: boolean }) => (
     <div
       key={alert.id}
@@ -61,20 +52,20 @@ export const AlertHistory = ({ acknowledgedAlerts, fixedAlerts, onMarkFixed }: A
           <div className="mt-1">
             {getAlertIcon(alert.type)}
           </div>
-          <div className="flex-1 space-y-2">
+          <div className="flex-1 space-y-3">
             <div className="flex items-center gap-2 flex-wrap">
               <h4 className="font-medium text-sm">{alert.title}</h4>
               <Badge className={getAlertBadge(alert.type)}>
                 {alert.type.toUpperCase()}
               </Badge>
-              {alert.fixed && (
-                <Badge variant="secondary" className="bg-green-500/10 text-green-500">
+              {alert.isFixed && (
+                <Badge variant="secondary" className="bg-success/10 text-success">
                   <CheckCircle className="h-3 w-3 mr-1" />
                   Fixed
                 </Badge>
               )}
-              {alert.acknowledged && !alert.fixed && (
-                <Badge variant="secondary" className="bg-blue-500/10 text-blue-500">
+              {alert.isAcknowledged && !alert.isFixed && (
+                <Badge variant="secondary" className="bg-info/10 text-info">
                   <Clock className="h-3 w-3 mr-1" />
                   Acknowledged
                 </Badge>
@@ -83,17 +74,61 @@ export const AlertHistory = ({ acknowledgedAlerts, fixedAlerts, onMarkFixed }: A
             <p className="text-sm text-muted-foreground">
               {alert.message}
             </p>
-            {alert.suggestion && (
-              <div className="p-3 bg-muted/50 rounded border-l-4 border-primary">
-                <p className="text-sm">
-                  <span className="font-medium text-primary">Suggestion: </span>
-                  {alert.suggestion}
-                </p>
-              </div>
+            
+            {/* Enhanced Suggestions Section */}
+            {alert.suggestions && alert.suggestions.length > 0 && (
+              <Accordion type="single" collapsible className="border rounded-lg">
+                <AccordionItem value="suggestions" className="border-none">
+                  <AccordionTrigger className="px-4 py-2 text-sm hover:no-underline">
+                    <div className="flex items-center gap-2">
+                      <Lightbulb className="h-4 w-4 text-warning" />
+                      <span className="font-medium">Troubleshooting Guide</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-4 pb-4">
+                    <div className="space-y-3">
+                      <div className="text-sm space-y-2">
+                        <h5 className="font-medium text-warning">Recommended Actions:</h5>
+                        <ul className="space-y-1 pl-4">
+                          {alert.suggestions.map((suggestion, index) => (
+                            <li key={index} className="text-xs text-muted-foreground list-disc">
+                              {suggestion}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      {alert.contactInfo && (
+                        <div className="p-3 bg-info/10 rounded-lg border border-info/20">
+                          <div className="flex items-center gap-2 mb-2">
+                            <User className="h-4 w-4 text-info" />
+                            <span className="text-sm font-medium text-info">Need Help?</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground">{alert.contactInfo}</p>
+                          <div className="flex items-center gap-4 mt-2">
+                            <div className="flex items-center gap-1 text-xs text-info">
+                              <Phone className="h-3 w-3" />
+                              <span>+1 (555) 123-4567</span>
+                            </div>
+                            <div className="flex items-center gap-1 text-xs text-info">
+                              <Mail className="h-3 w-3" />
+                              <span>support@smartmonitor.com</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             )}
+            
             <div className="flex items-center gap-4 text-xs text-muted-foreground">
-              <span>{alert.timestamp.toLocaleString()}</span>
+              <span>{new Date(alert.timestamp).toLocaleString()}</span>
               {alert.sensor && <span>Sensor: {alert.sensor}</span>}
+              {alert.value && alert.threshold && (
+                <span>Value: {alert.value} (Threshold: {alert.threshold})</span>
+              )}
             </div>
           </div>
         </div>
@@ -101,8 +136,8 @@ export const AlertHistory = ({ acknowledgedAlerts, fixedAlerts, onMarkFixed }: A
           <Button
             size="sm"
             variant="outline"
-            onClick={() => onMarkFixed(alert.id)}
-            className="h-8 px-3 text-green-600 border-green-200 hover:bg-green-50"
+            onClick={() => markAlertFixed(alert.id)}
+            className="h-8 px-3 text-success border-success/20 hover:bg-success/10"
           >
             <Wrench className="h-3 w-3 mr-1" />
             Mark Fixed
