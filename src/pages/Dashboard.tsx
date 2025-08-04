@@ -41,21 +41,27 @@ const Dashboard = () => {
   const isDashboardRoot = location.pathname === "/dashboard";
   const { getActiveAlerts, getAcknowledgedAlerts, addAlert, acknowledgeAlert, markAlertFixed, addSensorData } = useSensorData();
 
-  const [localSensorData, setLocalSensorData] = useState<LocalSensorData>({
-    temperature: 23.5,
-    humidity: 45.2,
-    gasEmission: 150.0,
-    vibration: 12000.0,
-    current: 1.8,
-    timestamp: new Date()
+  const [localSensorData, setLocalSensorData] = useState<LocalSensorData>(() => {
+    const saved = localStorage.getItem('smartmonitor-sensor-data');
+    return saved ? JSON.parse(saved) : {
+      temperature: 23.5,
+      humidity: 45.2,
+      gasEmission: 150.0,
+      vibration: 12000.0,
+      current: 1.8,
+      timestamp: new Date()
+    };
   });
 
-  const [historicalData, setHistoricalData] = useState({
-    temperature: [] as Array<{timestamp: string, value: number}>,
-    humidity: [] as Array<{timestamp: string, value: number}>,
-    gasEmission: [] as Array<{timestamp: string, value: number}>,
-    vibration: [] as Array<{timestamp: string, value: number}>,
-    current: [] as Array<{timestamp: string, value: number}>
+  const [historicalData, setHistoricalData] = useState(() => {
+    const saved = localStorage.getItem('smartmonitor-historical-data');
+    return saved ? JSON.parse(saved) : {
+      temperature: [] as Array<{timestamp: string, value: number}>,
+      humidity: [] as Array<{timestamp: string, value: number}>,
+      gasEmission: [] as Array<{timestamp: string, value: number}>,
+      vibration: [] as Array<{timestamp: string, value: number}>,
+      current: [] as Array<{timestamp: string, value: number}>
+    };
   });
 
   const [isConnected, setIsConnected] = useState(true);
@@ -279,7 +285,11 @@ const Dashboard = () => {
 
                 {/* Data Bridge */}
                 <DataBridge onDataReceived={(data) => {
-                  setLocalSensorData(prev => ({ ...prev, ...data }));
+                  const newSensorData = { ...data };
+                  setLocalSensorData(newSensorData);
+                  
+                  // Persist to localStorage
+                  localStorage.setItem('smartmonitor-sensor-data', JSON.stringify(newSensorData));
                   
                   // Add to context
                   addSensorData({
@@ -299,13 +309,16 @@ const Dashboard = () => {
                     minute: '2-digit' 
                   });
 
-                  setHistoricalData(prev => ({
-                    temperature: [...prev.temperature.slice(-19), { timestamp: timeStr, value: data.temperature }],
-                    humidity: [...prev.humidity.slice(-19), { timestamp: timeStr, value: data.humidity }],
-                    gasEmission: [...prev.gasEmission.slice(-19), { timestamp: timeStr, value: data.gasEmission }],
-                    vibration: [...prev.vibration.slice(-19), { timestamp: timeStr, value: data.vibration }],
-                    current: [...prev.current.slice(-19), { timestamp: timeStr, value: data.current }]
-                  }));
+                  const newHistoricalData = {
+                    temperature: [...historicalData.temperature.slice(-19), { timestamp: timeStr, value: data.temperature }],
+                    humidity: [...historicalData.humidity.slice(-19), { timestamp: timeStr, value: data.humidity }],
+                    gasEmission: [...historicalData.gasEmission.slice(-19), { timestamp: timeStr, value: data.gasEmission }],
+                    vibration: [...historicalData.vibration.slice(-19), { timestamp: timeStr, value: data.vibration }],
+                    current: [...historicalData.current.slice(-19), { timestamp: timeStr, value: data.current }]
+                  };
+                  
+                  setHistoricalData(newHistoricalData);
+                  localStorage.setItem('smartmonitor-historical-data', JSON.stringify(newHistoricalData));
 
                   // Generate alerts with detailed suggestions
                   if (data.temperature > 60) {

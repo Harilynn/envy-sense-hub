@@ -8,8 +8,8 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Vibrant Light IoT Theme */
-    --background: 220 20% 97%;
+    /* Vibrant Light IoT Theme with Beautiful Colors */
+    --background: 210 40% 98%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -18,50 +18,45 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 280 100% 65%;
+    --primary: 270 95% 65%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
+    --secondary: 162 85% 55%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
+    --muted: 210 40% 94%;
+    --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 320 85% 60%;
+    --accent: 300 85% 70%;
     --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 280 100% 65%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 270 95% 65%;
 
-    /* Vibrant Status Colors */
+    /* Custom IoT Theme Colors */
     --success: 142 76% 36%;
-    --success-foreground: 210 40% 98%;
-    
+    --success-foreground: 355.7 100% 97.3%;
     --warning: 38 92% 50%;
-    --warning-foreground: 222.2 84% 4.9%;
-    
-    --danger: 0 84% 60%;
-    --danger-foreground: 210 40% 98%;
-
-    --info: 221 83% 53%;
+    --warning-foreground: 48 96% 89%;
+    --info: 199 89% 48%;
     --info-foreground: 210 40% 98%;
 
-    /* Vibrant Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(280 100% 65%) 0%, hsl(320 85% 60%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(210 50% 45%) 0%, hsl(200 100% 60%) 100%);
-    --gradient-success: linear-gradient(135deg, hsl(140 85% 50%) 0%, hsl(160 85% 45%) 100%);
-    --gradient-warning: linear-gradient(135deg, hsl(45 100% 65%) 0%, hsl(35 100% 60%) 100%);
-    --gradient-danger: linear-gradient(135deg, hsl(0 84% 60%) 0%, hsl(10 84% 55%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(280 100% 65%) 0%, hsl(320 85% 60%) 50%, hsl(200 100% 60%) 100%);
+    /* Beautiful Vibrant Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(270 95% 65%), hsl(300 85% 70%));
+    --gradient-hero: linear-gradient(135deg, hsl(270 95% 65%) 0%, hsl(300 85% 70%) 30%, hsl(162 85% 55%) 70%, hsl(142 76% 36%) 100%);
+    --gradient-success: linear-gradient(135deg, hsl(142 76% 36%), hsl(162 85% 55%));
+    --gradient-green: linear-gradient(135deg, hsl(162 85% 55%), hsl(142 76% 36%));
+    --gradient-purple: linear-gradient(135deg, hsl(270 95% 65%), hsl(280 90% 70%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(210 40% 98%));
 
     /* Enhanced Shadows */
-    --shadow-glow: 0 0 30px hsl(280 100% 65% / 0.4);
+    --shadow-glow: 0 0 30px hsl(270 95% 65% / 0.4);
     --shadow-card: 0 8px 25px hsl(217 19% 5% / 0.6);
-    --shadow-accent: 0 0 40px hsl(320 85% 60% / 0.3);
+    --shadow-accent: 0 0 40px hsl(300 85% 70% / 0.3);
 
     --radius: 0.75rem;
 

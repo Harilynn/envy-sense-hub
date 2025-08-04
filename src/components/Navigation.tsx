@@ -38,7 +38,9 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
 
   const isActive = (path: string) => {
     if (path === "/" && location.pathname === "/") return true;
-    if (path !== "/" && location.pathname.startsWith(path)) return true;
+    if (path === "/#features" && location.hash === "#features") return true;
+    if (path === "/#about" && location.hash === "#about") return true;
+    if (path !== "/" && !path.includes("#") && location.pathname.startsWith(path)) return true;
     return false;
   };
 
@@ -63,8 +65,8 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                 key={item.name}
                 to={item.path}
                 className={cn(
-                  "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground",
-                  isActive(item.path) ? "text-primary bg-accent/50" : "text-muted-foreground"
+                  "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-accent hover:text-white",
+                  isActive(item.path) ? "text-muted-foreground bg-accent" : "text-muted-foreground"
                 )}
               >
                 {item.name}
@@ -77,9 +79,9 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                 <Button 
                   variant="ghost" 
                   className={cn(
-                    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground",
+                    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-accent hover:text-white",
                     location.pathname.startsWith('/dashboard') 
-                      ? "text-primary bg-accent/50" 
+                      ? "text-muted-foreground bg-accent" 
                       : "text-muted-foreground"
                   )}
                 >
@@ -93,8 +95,8 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                       key={item.name}
                       to={item.path}
                       className={cn(
-                        "flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors hover:bg-accent hover:text-accent-foreground",
-                        isActive(item.path) ? "bg-accent text-accent-foreground" : ""
+                        "flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors hover:bg-accent hover:text-white",
+                        isActive(item.path) ? "bg-accent text-white" : ""
                       )}
                       onClick={() => setIsDashboardOpen(false)}
                     >
@@ -130,6 +132,18 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4 max-h-96 overflow-y-auto">
+                    {/* Active Alert Summary Banner */}
+                    {alerts.length > 0 && (
+                      <div className="p-3 rounded-lg bg-destructive border border-destructive/20 mb-4">
+                        <div className="flex items-center justify-center text-white">
+                          <AlertTriangle className="h-4 w-4 mr-2 animate-pulse" />
+                          <span className="font-medium">
+                            {alerts.length} active alert{alerts.length > 1 ? 's' : ''}: Immediate attention required
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Active Alerts */}
                     {alerts.length > 0 && (
                       <div className="space-y-2">
@@ -189,6 +203,34 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                         ))}
                       </div>
                     )}
+
+                    {/* System Status Summary */}
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-info flex items-center gap-2">
+                        <Info className="h-4 w-4" />
+                        System Overview
+                      </h4>
+                      <div className="grid gap-2">
+                        <div className="p-3 rounded-lg bg-success/10 border border-success/20">
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm">ESP32 Status</span>
+                            <span className="text-xs text-success">● Online</span>
+                          </div>
+                        </div>
+                        <div className="p-3 rounded-lg bg-info/10 border border-info/20">
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm">Data Collection</span>
+                            <span className="text-xs text-info">● Active</span>
+                          </div>
+                        </div>
+                        <div className="p-3 rounded-lg bg-primary/10 border border-primary/20">
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm">AI Analysis</span>
+                            <span className="text-xs text-primary">● Processing</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
                     {alerts.length === 0 && acknowledgedAlerts.length === 0 && (
                       <div className="text-center py-8 text-muted-foreground">

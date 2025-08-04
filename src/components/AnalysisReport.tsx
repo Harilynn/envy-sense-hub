@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import jsPDF from 'jspdf';
 import { 
   FileText, 
   Download, 
@@ -101,33 +102,58 @@ export const AnalysisReport = ({ sensorData, historicalData, alerts }: AnalysisR
   }, 0) / Object.keys(metrics).length;
 
   const generateReport = () => {
-    const reportData = {
-      timestamp: new Date().toISOString(),
-      period: "Last 24 hours",
-      metrics,
-      alerts: {
-        total: totalAlerts,
-        active: activeAlerts.length,
-        resolved: resolvedAlerts.length
-      },
-      overallHealth,
-      recommendations: [
-        "Monitor temperature trends closely - showing upward trend",
-        "Schedule preventive maintenance for vibration sensors",
-        "Optimize humidity control systems",
-        "Review gas emission patterns for potential efficiency improvements"
-      ]
-    };
-
-    const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `smartmonitor-report-${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    const pdf = new jsPDF();
+    
+    // Header
+    pdf.setFontSize(20);
+    pdf.text('SmartMonitor Analysis Report', 20, 30);
+    
+    pdf.setFontSize(12);
+    pdf.text(`Generated: ${new Date().toLocaleString()}`, 20, 45);
+    
+    // System Overview
+    pdf.setFontSize(16);
+    pdf.text('System Overview', 20, 65);
+    
+    pdf.setFontSize(10);
+    pdf.text(`Overall Health Score: ${overallHealth.toFixed(1)}%`, 20, 80);
+    pdf.text(`Temperature: ${sensorData.temperature}°C (${metrics.temperature.status})`, 20, 95);
+    pdf.text(`Humidity: ${sensorData.humidity}% (${metrics.humidity.status})`, 20, 105);
+    pdf.text(`Gas Emission: ${sensorData.gasEmission} ppm (${metrics.gasEmission.status})`, 20, 115);
+    pdf.text(`Vibration: ${sensorData.vibration} (${metrics.vibration.status})`, 20, 125);
+    pdf.text(`Current: ${sensorData.current}A (${metrics.current.status})`, 20, 135);
+    
+    // Alert Summary
+    pdf.setFontSize(16);
+    pdf.text('Alert Summary', 20, 155);
+    
+    pdf.setFontSize(10);
+    pdf.text(`Active Alerts: ${activeAlerts.length}`, 20, 170);
+    pdf.text(`Resolved Alerts: ${resolvedAlerts.length}`, 20, 180);
+    pdf.text(`Total Alerts: ${totalAlerts}`, 20, 190);
+    
+    // Active Alerts Details
+    if (activeAlerts.length > 0) {
+      pdf.setFontSize(14);
+      pdf.text('Active Alerts Details', 20, 210);
+      
+      let yPos = 225;
+      activeAlerts.forEach((alert, index) => {
+        pdf.setFontSize(10);
+        pdf.text(`${index + 1}. ${alert.title}`, 25, yPos);
+        pdf.text(`   ${alert.message}`, 25, yPos + 10);
+        pdf.text(`   Sensor: ${alert.sensor}`, 25, yPos + 20);
+        yPos += 35;
+        
+        if (yPos > 280) {
+          pdf.addPage();
+          yPos = 30;
+        }
+      });
+    }
+    
+    // Download the PDF
+    pdf.save(`smartmonitor-report-${new Date().toISOString().split('T')[0]}.pdf`);
   };
 
   const getTrendIcon = (trend: string) => {

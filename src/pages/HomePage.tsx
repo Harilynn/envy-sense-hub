@@ -107,8 +107,13 @@ export default function HomePage() {
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" asChild className="hover-scale border-white/30 text-white hover:bg-white/10">
-                <Link to="#features">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                asChild 
+                className="hover-scale border-white/30 bg-transparent text-white hover:bg-accent hover:text-white transition-all duration-300"
+              >
+                <Link to="#learn-more">
                   <BookOpen className="mr-2 h-4 w-4" />
                   Learn More
                 </Link>
@@ -191,34 +196,34 @@ export default function HomePage() {
             </div>
             
             <div className="relative animate-scale-in">
-              <div className="absolute inset-0 bg-gradient-success rounded-2xl blur-2xl opacity-20" />
-              <Card className="relative bg-success/5 backdrop-blur border border-success/20 p-8">
-                <div className="flex items-center justify-center mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="p-3 bg-success/20 rounded-full">
-                      <CheckCircle className="h-8 w-8 text-success animate-pulse" />
+              <div className="absolute inset-0 bg-gradient-green rounded-2xl blur-3xl opacity-30 animate-pulse" />
+              <Card className="relative bg-gradient-card backdrop-blur border border-primary/20 p-8 shadow-2xl">
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center gap-4 p-6 bg-gradient-green rounded-2xl mb-4">
+                    <div className="p-3 bg-white/20 rounded-full animate-bounce">
+                      <Activity className="h-8 w-8 text-white" />
                     </div>
-                    <div className="text-center">
-                      <h3 className="text-xl font-bold text-success">System Operating Normally</h3>
-                      <p className="text-sm text-success/80">All sensors are within safe operating parameters</p>
+                    <div>
+                      <h3 className="text-2xl font-bold text-white">Live Monitoring Active</h3>
+                      <p className="text-white/90">Industrial IoT at its finest</p>
                     </div>
-                    <div className="p-3 bg-success/20 rounded-full">
-                      <CheckCircle className="h-6 w-6 text-success" />
+                    <div className="p-3 bg-white/20 rounded-full animate-pulse">
+                      <Sparkles className="h-6 w-6 text-white" />
                     </div>
                   </div>
                 </div>
                 <div className="grid gap-4">
-                  <div className="flex justify-between items-center p-3 bg-success/10 rounded-lg">
-                    <span className="text-sm font-medium">Temperature</span>
-                    <span className="text-sm font-mono text-success">23.5°C ✓</span>
+                  <div className="flex justify-between items-center p-4 bg-gradient-purple rounded-lg border border-primary/30">
+                    <span className="text-sm font-semibold text-white">Real-time Analytics</span>
+                    <span className="text-sm font-mono text-white animate-pulse">● ACTIVE</span>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-success/10 rounded-lg">
-                    <span className="text-sm font-medium">System Efficiency</span>
-                    <span className="text-sm font-mono text-success">91.8% ✓</span>
+                  <div className="flex justify-between items-center p-4 bg-gradient-success rounded-lg border border-secondary/30">
+                    <span className="text-sm font-semibold text-white">AI Predictions</span>
+                    <span className="text-sm font-mono text-white animate-pulse">● LEARNING</span>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-success/10 rounded-lg">
-                    <span className="text-sm font-medium">Uptime</span>
-                    <span className="text-sm font-mono text-success">94.2% ✓</span>
+                  <div className="flex justify-between items-center p-4 bg-gradient-primary rounded-lg border border-accent/30">
+                    <span className="text-sm font-semibold text-white">Smart Alerts</span>
+                    <span className="text-sm font-mono text-white animate-pulse">● READY</span>
                   </div>
                 </div>
               </Card>
@@ -255,7 +260,11 @@ export default function HomePage() {
           </div>
           
           <div className="mt-12">
-            <Button size="lg" asChild className="hover-scale bg-gradient-primary text-white">
+            <Button 
+              size="lg" 
+              asChild 
+              className="hover-scale bg-gradient-primary text-white hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+            >
               <Link to="/dashboard">
                 Start Free Trial
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -274,7 +283,11 @@ export default function HomePage() {
           <p className="text-xl text-muted-foreground mb-8">
             Join the future of industrial monitoring today
           </p>
-          <Button size="lg" asChild className="hover-scale bg-gradient-primary text-white">
+          <Button 
+            size="lg" 
+            asChild 
+            className="hover-scale bg-accent text-white hover:bg-white hover:text-accent border border-accent transition-all duration-300 transform hover:scale-105"
+          >
             <Link to="/dashboard">
               Experience SmartMonitor
               <ArrowRight className="ml-2 h-4 w-4" />
