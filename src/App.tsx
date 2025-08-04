@@ -15,7 +15,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <SensorDataProvider>
       <TooltipProvider>
-        <div className="dark">
+        <div className="light">
           <Toaster />
           <Sonner />
           <BrowserRouter>

@@ -48,27 +48,49 @@ export const useSensorData = () => {
 };
 
 export const SensorDataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [sensorData, setSensorData] = useState<SensorReading[]>([]);
-  const [alerts, setAlerts] = useState<Alert[]>([]);
+  const [sensorData, setSensorData] = useState<SensorReading[]>(() => {
+    const saved = localStorage.getItem('sensorData');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [alerts, setAlerts] = useState<Alert[]>(() => {
+    const saved = localStorage.getItem('alerts');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   const addSensorData = (data: SensorReading) => {
-    setSensorData(prev => [...prev, data]);
+    setSensorData(prev => {
+      const updated = [...prev, data];
+      localStorage.setItem('sensorData', JSON.stringify(updated));
+      return updated;
+    });
   };
 
   const addAlert = (alert: Alert) => {
-    setAlerts(prev => [...prev, alert]);
+    setAlerts(prev => {
+      const updated = [...prev, alert];
+      localStorage.setItem('alerts', JSON.stringify(updated));
+      return updated;
+    });
   };
 
   const acknowledgeAlert = (alertId: string) => {
-    setAlerts(prev => prev.map(alert => 
-      alert.id === alertId ? { ...alert, isAcknowledged: true } : alert
-    ));
+    setAlerts(prev => {
+      const updated = prev.map(alert => 
+        alert.id === alertId ? { ...alert, isAcknowledged: true } : alert
+      );
+      localStorage.setItem('alerts', JSON.stringify(updated));
+      return updated;
+    });
   };
 
   const markAlertFixed = (alertId: string) => {
-    setAlerts(prev => prev.map(alert => 
-      alert.id === alertId ? { ...alert, isFixed: true } : alert
-    ));
+    setAlerts(prev => {
+      const updated = prev.map(alert => 
+        alert.id === alertId ? { ...alert, isFixed: true } : alert
+      );
+      localStorage.setItem('alerts', JSON.stringify(updated));
+      return updated;
+    });
   };
 
   const getActiveAlerts = () => {
