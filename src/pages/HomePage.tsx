@@ -124,7 +124,7 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 bg-gradient-to-r from-background via-primary/5 to-background">
+      <section id="features" className="py-20 bg-gradient-section-primary">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
@@ -234,7 +234,7 @@ export default function HomePage() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-gradient-to-r from-background via-accent/5 to-background">
+      <section id="about" className="py-20 bg-gradient-section-accent">
         <div className="max-w-4xl mx-auto px-4 text-center animate-fade-in">
           <h2 className="text-3xl sm:text-4xl font-bold mb-8">
             About SmartMonitor
@@ -263,41 +263,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="py-20 bg-gradient-tech">
-        <div className="max-w-4xl mx-auto px-4 text-center animate-fade-in">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
-            Contact Us for Professional Services
-          </h2>
-          <p className="text-xl text-white/90 mb-8">
-            Get expert consultation and implementation support for your industrial IoT needs
-          </p>
-          <div className="grid gap-6 md:grid-cols-3 mb-8">
-            <div className="bg-white/10 backdrop-blur p-6 rounded-lg border border-white/20">
-              <h3 className="text-lg font-bold text-white mb-2">Consultation</h3>
-              <p className="text-white/80 text-sm">Expert analysis of your monitoring requirements</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur p-6 rounded-lg border border-white/20">
-              <h3 className="text-lg font-bold text-white mb-2">Implementation</h3>
-              <p className="text-white/80 text-sm">Full system setup and configuration support</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur p-6 rounded-lg border border-white/20">
-              <h3 className="text-lg font-bold text-white mb-2">Support</h3>
-              <p className="text-white/80 text-sm">Ongoing maintenance and technical assistance</p>
-            </div>
-          </div>
-          <Button 
-            size="lg" 
-            className="hover-dramatic hover-tech-glow bg-white text-primary hover:bg-white/90 transition-all duration-300"
-          >
-            Get Professional Support
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10">
+      <section className="py-20 bg-gradient-section-primary">
         <div className="max-w-4xl mx-auto px-4 text-center animate-fade-in">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             Ready to Transform Your Operations?

@@ -39,6 +39,19 @@ const getTrendIcon = (trend?: "up" | "down" | "stable") => {
   }
 };
 
+const getStatusGradient = (status: "good" | "warning" | "danger") => {
+  switch (status) {
+    case "good":
+      return "bg-gradient-to-br from-success/10 via-success/5 to-background";
+    case "warning":
+      return "bg-gradient-to-br from-warning/10 via-warning/5 to-background";
+    case "danger":
+      return "bg-gradient-to-br from-destructive/10 via-destructive/5 to-background";
+    default:
+      return "bg-gradient-card";
+  }
+};
+
 export const SensorCard = ({ 
   title, 
   value, 
@@ -50,9 +63,11 @@ export const SensorCard = ({
 }: SensorCardProps) => {
   return (
     <Card className={cn(
-      "relative overflow-hidden transition-all duration-300 hover:shadow-lg",
+      "relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105",
+      getStatusGradient(status),
       status === "danger" && "animate-pulse-glow",
-      status === "warning" && "animate-pulse-glow-yellow"
+      status === "warning" && "animate-pulse-glow-yellow",
+      "border-0 shadow-tech"
     )}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium text-muted-foreground">

@@ -53,6 +53,16 @@ All colors MUST be HSL.
     --gradient-teal: linear-gradient(135deg, hsl(197 93% 46%), hsl(185 84% 39%));
     --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(197 93% 98%));
     --gradient-tech: linear-gradient(135deg, hsl(197 93% 46%), hsl(185 84% 39%), hsl(162 85% 55%));
+    
+    /* Status-specific Gradients */
+    --gradient-warning: linear-gradient(135deg, hsl(38 92% 50%), hsl(45 93% 47%));
+    --gradient-danger: linear-gradient(135deg, hsl(0 84% 60%), hsl(15 84% 60%));
+    --gradient-info: linear-gradient(135deg, hsl(199 89% 48%), hsl(197 93% 46%));
+    
+    /* Background Section Gradients */
+    --gradient-section-primary: linear-gradient(135deg, hsl(210 40% 98%), hsl(197 93% 98%), hsl(210 40% 98%));
+    --gradient-section-accent: linear-gradient(135deg, hsl(185 84% 98%), hsl(162 85% 98%), hsl(185 84% 98%));
+    --gradient-navbar: linear-gradient(135deg, hsl(210 40% 98%), hsl(197 93% 99%));
 
     /* Tech-focused Shadows */
     --shadow-glow: 0 0 30px hsl(197 93% 46% / 0.4);
@@ -172,5 +182,18 @@ All colors MUST be HSL.
 .hover-tech-glow:hover {
   box-shadow: 0 0 30px hsl(var(--primary) / 0.6), 0 0 60px hsl(var(--accent) / 0.4);
   transform: scale(1.05);
+}
+
+/* Section Background Gradients */
+.bg-gradient-section-primary {
+  background: var(--gradient-section-primary);
+}
+
+.bg-gradient-section-accent {
+  background: var(--gradient-section-accent);
+}
+
+.bg-gradient-navbar {
+  background: var(--gradient-navbar);
 }
 

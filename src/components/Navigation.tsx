@@ -27,6 +27,7 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
     { name: "Home", path: "/" },
     { name: "Features", path: "/#features" },
     { name: "About", path: "/#about" },
+    { name: "Contact", path: "/contact" },
   ];
 
   const scrollToSection = (sectionId: string) => {
@@ -52,7 +53,7 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
   };
 
   return (
-    <nav className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border sticky top-0 z-50">
+    <nav className="bg-gradient-navbar backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -118,8 +119,8 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                   className={cn(
                     "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
                     location.pathname.startsWith('/dashboard') 
-                      ? "text-muted-foreground bg-accent" 
-                      : "text-muted-foreground"
+                      ? "text-foreground bg-gradient-to-r from-primary/10 to-accent/10" 
+                      : "text-muted-foreground hover:text-muted-foreground"
                   )}
                 >
                   Dashboard
