@@ -64,7 +64,7 @@ export const SensorCard = ({
       <CardContent>
         <div className="flex items-baseline space-x-2">
           <div className="text-2xl font-bold">
-            {value.toFixed(1)}
+            {(value ?? 0).toFixed(1)}
           </div>
           <div className="text-sm text-muted-foreground">
             {unit}
