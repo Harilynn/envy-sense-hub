@@ -26,11 +26,11 @@ const getAlertIcon = (type: Alert["type"]) => {
 const getAlertBadge = (type: Alert["type"]) => {
   switch (type) {
     case "danger":
-      return "bg-danger text-danger-foreground";
+      return "destructive";
     case "warning":
-      return "bg-warning text-warning-foreground";
+      return "warning";
     case "info":
-      return "bg-primary text-primary-foreground";
+      return "default";
   }
 };
 
@@ -71,7 +71,7 @@ export const AlertPanel = ({ alerts, onAcknowledge, onDismiss }: AlertPanelProps
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <h4 className="font-medium text-sm">{alert.title}</h4>
-                        <Badge className={getAlertBadge(alert.type)}>
+                        <Badge variant={getAlertBadge(alert.type) as any}>
                           {alert.type.toUpperCase()}
                         </Badge>
                       </div>

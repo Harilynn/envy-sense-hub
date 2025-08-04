@@ -23,11 +23,11 @@ const getAlertIcon = (type: Alert["type"]) => {
 const getAlertBadge = (type: Alert["type"]) => {
   switch (type) {
     case "danger":
-      return "bg-danger text-danger-foreground";
+      return "destructive";
     case "warning":
-      return "bg-warning text-warning-foreground";
+      return "warning";
     case "info":
-      return "bg-primary text-primary-foreground";
+      return "default";
   }
 };
 
@@ -55,9 +55,9 @@ export const AlertHistory = ({}: AlertHistoryProps) => {
           <div className="flex-1 space-y-3">
             <div className="flex items-center gap-2 flex-wrap">
               <h4 className="font-medium text-sm">{alert.title}</h4>
-              <Badge className={getAlertBadge(alert.type)}>
-                {alert.type.toUpperCase()}
-              </Badge>
+            <Badge variant={getAlertBadge(alert.type) as any}>
+              {alert.type.toUpperCase()}
+            </Badge>
               {alert.isFixed && (
                 <Badge variant="secondary" className="bg-success/10 text-success">
                   <CheckCircle className="h-3 w-3 mr-1" />
@@ -137,7 +137,7 @@ export const AlertHistory = ({}: AlertHistoryProps) => {
             size="sm"
             variant="outline"
             onClick={() => markAlertFixed(alert.id)}
-            className="h-8 px-3 text-success border-success/20 hover:bg-success/10"
+            className="h-8 px-3 hover:bg-success hover:text-success-foreground hover:border-success"
           >
             <Wrench className="h-3 w-3 mr-1" />
             Mark Fixed

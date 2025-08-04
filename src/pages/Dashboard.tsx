@@ -53,6 +53,19 @@ const Dashboard = () => {
     };
   });
 
+  // Load and restore alerts on component mount
+  useEffect(() => {
+    const savedAlerts = localStorage.getItem('smartmonitor-alerts');
+    if (savedAlerts) {
+      const alerts = JSON.parse(savedAlerts);
+      alerts.forEach((alert: any) => {
+        if (!alert.isAcknowledged && !alert.isFixed) {
+          addAlert(alert);
+        }
+      });
+    }
+  }, [addAlert]);
+
   const [historicalData, setHistoricalData] = useState(() => {
     const saved = localStorage.getItem('smartmonitor-historical-data');
     return saved ? JSON.parse(saved) : {
@@ -290,6 +303,10 @@ const Dashboard = () => {
                   
                   // Persist to localStorage
                   localStorage.setItem('smartmonitor-sensor-data', JSON.stringify(newSensorData));
+                  
+                  // Persist current alerts to localStorage
+                  const allAlerts = [...getActiveAlerts(), ...getAcknowledgedAlerts()];
+                  localStorage.setItem('smartmonitor-alerts', JSON.stringify(allAlerts));
                   
                   // Add to context
                   addSensorData({

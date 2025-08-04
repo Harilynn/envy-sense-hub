@@ -51,7 +51,8 @@ export const SensorCard = ({
   return (
     <Card className={cn(
       "relative overflow-hidden transition-all duration-300 hover:shadow-lg",
-      status === "danger" && "animate-pulse-glow"
+      status === "danger" && "animate-pulse-glow",
+      status === "warning" && "animate-pulse-glow-yellow"
     )}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium text-muted-foreground">

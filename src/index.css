@@ -127,16 +127,32 @@ All colors MUST be HSL.
 }
 @keyframes red-pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 0px 0px hsl(0, 84%, 60%, 0.3); /* Start: no spread */
+    box-shadow: 0 0 0px 0px hsl(0, 84%, 60%, 0.3);
   }
   50% {
-    box-shadow: 0 0 8px 4px hsl(0, 84%, 60%, 0.5); /* Smaller glow */
+    box-shadow: 0 0 8px 4px hsl(0, 84%, 60%, 0.5);
+  }
+}
+
+@keyframes yellow-pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0px 0px hsl(38, 92%, 50%, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 8px 4px hsl(38, 92%, 50%, 0.5);
   }
 }
 
 .animate-pulse-glow {
   animation: red-pulse-glow 1.5s ease-in-out infinite;
   border: 1px solid hsl(0, 84%, 60%);
+  position: relative;
+  z-index: 1;
+}
+
+.animate-pulse-glow-yellow {
+  animation: yellow-pulse-glow 1.5s ease-in-out infinite;
+  border: 1px solid hsl(38, 92%, 50%);
   position: relative;
   z-index: 1;
 }
