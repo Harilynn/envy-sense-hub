@@ -208,7 +208,7 @@ export default function HomePage() {
                       <p className="text-white/90">Advanced IoT intelligence</p>
                     </div>
                     <div className="p-3 bg-white/20 rounded-full animate-pulse">
-                      <Sparkles className="h-6 w-6 text-white" />
+                      <Sparkles className="h-6 w-6 text-black" />
                     </div>
                   </div>
                 </div>
