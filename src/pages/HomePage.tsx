@@ -111,9 +111,9 @@ export default function HomePage() {
                 variant="outline" 
                 size="lg" 
                 asChild 
-                className="hover-scale border-white/30 bg-transparent text-white hover:bg-accent hover:text-white transition-all duration-300"
+                className="hover-scale border-white/30 bg-white/10 text-white hover:bg-accent hover:text-white transition-all duration-300"
               >
-                <Link to="#learn-more">
+                <Link to="/learn-more">
                   <BookOpen className="mr-2 h-4 w-4" />
                   Learn More
                 </Link>
@@ -204,8 +204,8 @@ export default function HomePage() {
                       <Activity className="h-8 w-8 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-white">Live Monitoring Active</h3>
-                      <p className="text-white/90">Industrial IoT at its finest</p>
+                      <h3 className="text-2xl font-bold text-white">Smart Analytics</h3>
+                      <p className="text-white/90">Advanced IoT intelligence</p>
                     </div>
                     <div className="p-3 bg-white/20 rounded-full animate-pulse">
                       <Sparkles className="h-6 w-6 text-white" />
@@ -259,18 +259,6 @@ export default function HomePage() {
             </p>
           </div>
           
-          <div className="mt-12">
-            <Button 
-              size="lg" 
-              asChild 
-              className="hover-scale bg-gradient-primary text-white hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
-            >
-              <Link to="/dashboard">
-                Start Free Trial
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
         </div>
       </section>
 
@@ -283,16 +271,16 @@ export default function HomePage() {
           <p className="text-xl text-muted-foreground mb-8">
             Join the future of industrial monitoring today
           </p>
-          <Button 
-            size="lg" 
-            asChild 
-            className="hover-scale bg-accent text-white hover:bg-white hover:text-accent border border-accent transition-all duration-300 transform hover:scale-105"
-          >
-            <Link to="/dashboard">
-              Experience SmartMonitor
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
+            <Button 
+              size="lg" 
+              asChild 
+              className="hover-scale bg-accent text-white hover:bg-white hover:text-accent border border-accent transition-all duration-300 transform hover:scale-105"
+            >
+              <Link to="/dashboard">
+                Experience SmartMonitor
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
         </div>
       </section>
     </div>

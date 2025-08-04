@@ -29,6 +29,13 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
     { name: "About", path: "/#about" },
   ];
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const dashboardItems = [
     { name: "Live Dashboard", path: "/dashboard", icon: BarChart3 },
     { name: "Alert History", path: "/dashboard/alerts", icon: History },
@@ -60,18 +67,48 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                className={cn(
-                  "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-accent hover:text-white",
-                  isActive(item.path) ? "text-muted-foreground bg-accent" : "text-muted-foreground"
-                )}
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              if (item.name === "Features") {
+                return (
+                  <button
+                    key={item.name}
+                    onClick={() => scrollToSection('features')}
+                    className={cn(
+                      "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-accent hover:text-white",
+                      location.pathname === "/" && location.hash === "#features" ? "text-muted-foreground bg-accent" : "text-muted-foreground"
+                    )}
+                  >
+                    {item.name}
+                  </button>
+                );
+              }
+              if (item.name === "About") {
+                return (
+                  <button
+                    key={item.name}
+                    onClick={() => scrollToSection('about')}
+                    className={cn(
+                      "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-accent hover:text-white",
+                      location.pathname === "/" && location.hash === "#about" ? "text-muted-foreground bg-accent" : "text-muted-foreground"
+                    )}
+                  >
+                    {item.name}
+                  </button>
+                );
+              }
+              return (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={cn(
+                    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-accent hover:text-white",
+                    isActive(item.path) ? "text-muted-foreground bg-accent" : "text-muted-foreground"
+                  )}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
             
             {/* Dashboard with Dropdown */}
             <Popover open={isDashboardOpen} onOpenChange={setIsDashboardOpen}>
@@ -260,21 +297,61 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t animate-fade-in">
             <div className="flex flex-col space-y-2">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.path}
-                  className={cn(
-                    "block px-3 py-2 rounded-md text-sm font-medium transition-colors",
-                    isActive(item.path)
-                      ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:text-primary hover:bg-accent/50"
-                  )}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                if (item.name === "Features") {
+                  return (
+                    <button
+                      key={item.name}
+                      onClick={() => {
+                        scrollToSection('features');
+                        setIsMenuOpen(false);
+                      }}
+                      className={cn(
+                        "block px-3 py-2 rounded-md text-sm font-medium transition-colors text-left w-full",
+                        location.pathname === "/" && location.hash === "#features"
+                          ? "bg-primary/10 text-primary"
+                          : "text-muted-foreground hover:text-primary hover:bg-accent/50"
+                      )}
+                    >
+                      {item.name}
+                    </button>
+                  );
+                }
+                if (item.name === "About") {
+                  return (
+                    <button
+                      key={item.name}
+                      onClick={() => {
+                        scrollToSection('about');
+                        setIsMenuOpen(false);
+                      }}
+                      className={cn(
+                        "block px-3 py-2 rounded-md text-sm font-medium transition-colors text-left w-full",
+                        location.pathname === "/" && location.hash === "#about"
+                          ? "bg-primary/10 text-primary"
+                          : "text-muted-foreground hover:text-primary hover:bg-accent/50"
+                      )}
+                    >
+                      {item.name}
+                    </button>
+                  );
+                }
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.path}
+                    className={cn(
+                      "block px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                      isActive(item.path)
+                        ? "bg-primary/10 text-primary"
+                        : "text-muted-foreground hover:text-primary hover:bg-accent/50"
+                    )}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                );
+              })}
               
               {/* Mobile Dashboard Items */}
               <div className="pt-2 border-t">

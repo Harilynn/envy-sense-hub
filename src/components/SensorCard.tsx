@@ -15,14 +15,14 @@ interface SensorCardProps {
   trend?: "up" | "down" | "stable";
 }
 
-const getStatusColor = (status: "good" | "warning" | "danger") => {
+const getStatusVariant = (status: "good" | "warning" | "danger") => {
   switch (status) {
     case "good":
-      return "bg-success text-success-foreground";
+      return "success";
     case "warning":
-      return "bg-warning text-warning-foreground";
+      return "warning";
     case "danger":
-      return "bg-danger text-danger-foreground";
+      return "destructive";
   }
 };
 
@@ -76,7 +76,7 @@ export const SensorCard = ({
           )}
         </div>
         <div className="mt-3 flex items-center justify-between">
-          <Badge className={getStatusColor(status)}>
+          <Badge variant={getStatusVariant(status) as any}>
             {status.toUpperCase()}
           </Badge>
           {threshold && (
