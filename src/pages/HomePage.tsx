@@ -195,40 +195,7 @@ export default function HomePage() {
               </Button>
             </div>
             
-            <div className="relative animate-scale-in">
-              <div className="absolute inset-0 bg-gradient-green rounded-2xl blur-3xl opacity-30 animate-pulse" />
-              <Card className="relative bg-gradient-card backdrop-blur border border-primary/20 p-8 shadow-2xl">
-                <div className="text-center mb-6">
-                  <div className="inline-flex items-center gap-4 p-6 bg-gradient-green rounded-2xl mb-4">
-                    <div className="p-3 bg-white/20 rounded-full animate-bounce">
-                      <Activity className="h-8 w-8 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-white">Smart Analytics</h3>
-                      <p className="text-white/90">Advanced IoT intelligence</p>
-                    </div>
-                    <div className="p-3 bg-white/20 rounded-full animate-pulse">
-                      <Sparkles className="h-6 w-6 text-black" />
-                    </div>
-                  </div>
-                </div>
-                <div className="grid gap-4">
-                  <div className="flex justify-between items-center p-4 bg-gradient-purple rounded-lg border border-primary/30">
-                    <span className="text-sm font-semibold text-white">Real-time Analytics</span>
-                    <span className="text-sm font-mono text-white animate-pulse">● ACTIVE</span>
-                  </div>
-                  <div className="flex justify-between items-center p-4 bg-gradient-success rounded-lg border border-secondary/30">
-                    <span className="text-sm font-semibold text-white">AI Predictions</span>
-                    <span className="text-sm font-mono text-white animate-pulse">● LEARNING</span>
-                  </div>
-                  <div className="flex justify-between items-center p-4 bg-gradient-primary rounded-lg border border-accent/30">
-                    <span className="text-sm font-semibold text-white">Smart Alerts</span>
-                    <span className="text-sm font-mono text-white animate-pulse">● READY</span>
-                  </div>
-                </div>
-              </Card>
-            </div>
-          </div>
+            
         </div>
       </section>
 
