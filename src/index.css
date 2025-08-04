@@ -125,3 +125,18 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+@keyframes red-pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 hsl(0, 84%, 60%, 0.4); /* red */
+  }
+  50% {
+    box-shadow: 0 0 18px 10px hsl(0, 84%, 60%, 0.7);
+  }
+}
+
+.animate-pulse-glow {
+  animation: red-pulse-glow 2s ease-in-out infinite;
+  border: 1px solid hsl(0, 84%, 60%);
+  z-index: 1;
+  position: relative;
+}
