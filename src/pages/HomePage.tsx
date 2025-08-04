@@ -213,15 +213,15 @@ export default function HomePage() {
                 </div>
                 <div className="grid gap-4">
                   <div className="flex justify-between items-center p-4 bg-gradient-purple bg-opacity-70 rounded-lg border border-primary/30">
-                    <span className="text-sm font-semibold text-green drop-shadow-md">Live Analytics</span>
+                    <span className="text-sm font-semibold text-green-1500 drop-shadow-md">Live Analytics</span>
                     <span className="text-sm font-mono text-black animate-pulse">● LIVE</span>
                   </div>
                   <div className="flex justify-between items-center p-4 bg-gradient-success bg-opacity-70 rounded-lg border border-secondary/30">
-                    <span className="text-sm font-semibold text-green">Predictive Engine</span>
+                    <span className="text-sm font-semibold text-green-1500">Predictive Engine</span>
                     <span className="text-sm font-mono text-black animate-pulse">● TRAINING</span>
                   </div>
                   <div className="flex justify-between items-center p-4 bg-gradient-primary bg-opacity-70 rounded-lg border border-accent/30">
-                    <span className="text-sm font-semibold text-green">Alert Manager</span>
+                    <span className="text-sm font-semibold text-green-1500">Alert Manager</span>
                     <span className="text-sm font-mono text-black animate-pulse">● READY</span>
                   </div>
                 </div>
