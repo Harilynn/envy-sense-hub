@@ -9,7 +9,7 @@ interface Alert {
   type: "warning" | "danger" | "info";
   title: string;
   message: string;
-  timestamp: Date;
+  timestamp: string;
   sensor?: string;
   acknowledged?: boolean;
 }
@@ -87,7 +87,7 @@ export const AlertPanel = ({ alerts, onAcknowledge, onDismiss }: AlertPanelProps
                         {alert.message}
                       </p>
                       <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                        <span>{alert.timestamp.toLocaleTimeString()}</span>
+                        <span>{new Date(alert.timestamp).toLocaleTimeString()}</span>
                         {alert.sensor && <span>Sensor: {alert.sensor}</span>}
                       </div>
                     </div>

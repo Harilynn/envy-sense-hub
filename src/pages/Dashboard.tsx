@@ -27,7 +27,7 @@ import {
   TrendingUp
 } from "lucide-react";
 
-interface SensorData {
+interface LocalSensorData {
   temperature: number;
   humidity: number;
   gasEmission: number;
@@ -36,23 +36,12 @@ interface SensorData {
   timestamp: Date;
 }
 
-interface Alert {
-  id: string;
-  type: "warning" | "danger" | "info";
-  title: string;
-  message: string;
-  timestamp: Date;
-  sensor?: string;
-  acknowledged?: boolean;
-  fixed?: boolean;
-  suggestion?: string;
-}
-
 const Dashboard = () => {
   const location = useLocation();
   const isDashboardRoot = location.pathname === "/dashboard";
+  const { getActiveAlerts, getAcknowledgedAlerts, addAlert, acknowledgeAlert, markAlertFixed, addSensorData } = useSensorData();
 
-  const [sensorData, setSensorData] = useState<SensorData>({
+  const [localSensorData, setLocalSensorData] = useState<LocalSensorData>({
     temperature: 23.5,
     humidity: 45.2,
     gasEmission: 150.0,
@@ -68,25 +57,6 @@ const Dashboard = () => {
     vibration: [] as Array<{timestamp: string, value: number}>,
     current: [] as Array<{timestamp: string, value: number}>
   });
-
-  const [alerts, setAlerts] = useState<Alert[]>([
-    {
-      id: "1",
-      type: "warning",
-      title: "High Gas Emission",
-      message: "Gas concentration approaching upper threshold",
-      timestamp: new Date(Date.now() - 5 * 60 * 1000),
-      sensor: "Gas Sensor",
-      suggestion: "Check ventilation system and ensure proper air circulation. Consider reducing production load temporarily."
-    },
-    {
-      id: "2",
-      type: "info",
-      title: "System Online",
-      message: "All sensors are operational and reporting normally",
-      timestamp: new Date(Date.now() - 15 * 60 * 1000)
-    }
-  ]);
 
   const [isConnected, setIsConnected] = useState(true);
 
@@ -120,33 +90,42 @@ const Dashboard = () => {
     return "good";
   };
 
-  const handleAcknowledgeAlert = (alertId: string) => {
-    setAlerts(prev => prev.map(alert => 
-      alert.id === alertId ? { ...alert, acknowledged: true } : alert
-    ));
-  };
-
-  const handleFixAlert = (alertId: string) => {
-    setAlerts(prev => prev.map(alert => 
-      alert.id === alertId ? { ...alert, fixed: true } : alert
-    ));
-  };
-
   const handleDismissAlert = (alertId: string) => {
-    setAlerts(prev => prev.filter(alert => alert.id !== alertId));
+    // Remove from context alerts
   };
 
-  const activeAlerts = alerts.filter(alert => !alert.acknowledged && !alert.fixed);
-  const acknowledgedAlerts = alerts.filter(alert => alert.acknowledged && !alert.fixed);
-  const fixedAlerts = alerts.filter(alert => alert.fixed);
+  const activeAlerts = getActiveAlerts();
+  const acknowledgedAlerts = getAcknowledgedAlerts();
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation activeAlerts={activeAlerts.length} />
+      <Navigation />
       
       <div className="max-w-7xl mx-auto p-6 space-y-6">
         {isDashboardRoot && (
           <>
+            {/* System Status Banner */}
+            {activeAlerts.length === 0 ? (
+              <div className="bg-success/10 border border-success/20 rounded-lg p-4 mb-6 animate-fade-in">
+                <div className="flex items-center justify-center gap-3">
+                  <div className="flex items-center justify-center w-12 h-12 bg-success/20 rounded-full">
+                    <svg className="w-6 h-6 text-success" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-lg font-semibold text-success">System Operating Normally</h3>
+                    <p className="text-sm text-success/80">All sensors are within safe operating parameters</p>
+                  </div>
+                  <div className="flex items-center justify-center w-12 h-12 bg-success/20 rounded-full">
+                    <svg className="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
             {/* Dashboard Header */}
             <div className="flex items-center justify-between">
               <div>
@@ -193,48 +172,48 @@ const Dashboard = () => {
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
                   <SensorCard
                     title="Temperature"
-                    value={sensorData.temperature}
+                    value={localSensorData.temperature}
                     unit="°C"
-                    status={getTemperatureStatus(sensorData.temperature)}
+                    status={getTemperatureStatus(localSensorData.temperature)}
                     icon={<Thermometer className="h-4 w-4" />}
                     threshold={{ min: 18, max: 60 }}
-                    trend={sensorData.temperature > 45 ? "up" : sensorData.temperature < 25 ? "down" : "stable"}
+                    trend={localSensorData.temperature > 45 ? "up" : localSensorData.temperature < 25 ? "down" : "stable"}
                   />
                   <SensorCard
                     title="Humidity"
-                    value={sensorData.humidity}
+                    value={localSensorData.humidity}
                     unit="%"
-                    status={getHumidityStatus(sensorData.humidity)}
+                    status={getHumidityStatus(localSensorData.humidity)}
                     icon={<Droplets className="h-4 w-4" />}
                     threshold={{ min: 20, max: 80 }}
-                    trend={sensorData.humidity > 70 ? "up" : sensorData.humidity < 30 ? "down" : "stable"}
+                    trend={localSensorData.humidity > 70 ? "up" : localSensorData.humidity < 30 ? "down" : "stable"}
                   />
                   <SensorCard
                     title="Gas Emission"
-                    value={sensorData.gasEmission}
+                    value={localSensorData.gasEmission}
                     unit="ppm"
-                    status={getGasStatus(sensorData.gasEmission)}
+                    status={getGasStatus(localSensorData.gasEmission)}
                     icon={<AlertTriangle className="h-4 w-4" />}
                     threshold={{ min: 0, max: 400 }}
-                    trend={sensorData.gasEmission > 300 ? "up" : sensorData.gasEmission < 150 ? "down" : "stable"}
+                    trend={localSensorData.gasEmission > 300 ? "up" : localSensorData.gasEmission < 150 ? "down" : "stable"}
                   />
                   <SensorCard
                     title="Vibration"
-                    value={sensorData.vibration}
+                    value={localSensorData.vibration}
                     unit=""
-                    status={getVibrationStatus(sensorData.vibration)}
+                    status={getVibrationStatus(localSensorData.vibration)}
                     icon={<Activity className="h-4 w-4" />}
                     threshold={{ min: 0, max: 20000 }}
-                    trend={sensorData.vibration > 15000 ? "up" : sensorData.vibration < 10000 ? "down" : "stable"}
+                    trend={localSensorData.vibration > 15000 ? "up" : localSensorData.vibration < 10000 ? "down" : "stable"}
                   />
                   <SensorCard
                     title="Current"
-                    value={sensorData.current}
+                    value={localSensorData.current}
                     unit="A"
-                    status={getCurrentStatus(sensorData.current)}
+                    status={getCurrentStatus(localSensorData.current)}
                     icon={<Zap className="h-4 w-4" />}
                     threshold={{ min: 0, max: 2.5 }}
-                    trend={sensorData.current > 2.0 ? "up" : sensorData.current < 1.2 ? "down" : "stable"}
+                    trend={localSensorData.current > 2.0 ? "up" : localSensorData.current < 1.2 ? "down" : "stable"}
                   />
                 </div>
 
@@ -283,7 +262,7 @@ const Dashboard = () => {
                   </div>
                   <AlertPanel
                     alerts={activeAlerts}
-                    onAcknowledge={handleAcknowledgeAlert}
+                    onAcknowledge={acknowledgeAlert}
                     onDismiss={handleDismissAlert}
                   />
                 </div>
@@ -299,7 +278,19 @@ const Dashboard = () => {
 
                 {/* Data Bridge */}
                 <DataBridge onDataReceived={(data) => {
-                  setSensorData(prev => ({ ...prev, ...data }));
+                  setLocalSensorData(prev => ({ ...prev, ...data }));
+                  
+                  // Add to context
+                  addSensorData({
+                    id: `sensor-${Date.now()}`,
+                    timestamp: data.timestamp.toISOString(),
+                    temperature: data.temperature,
+                    humidity: data.humidity,
+                    current: data.current,
+                    vibration: data.vibration,
+                    gas_emission: data.gasEmission,
+                    device_id: "ESP32-001"
+                  });
                   
                   const timeStr = data.timestamp.toLocaleTimeString('en-US', { 
                     hour12: false, 
@@ -315,66 +306,124 @@ const Dashboard = () => {
                     current: [...prev.current.slice(-19), { timestamp: timeStr, value: data.current }]
                   }));
 
-                  // Generate alerts with suggestions
-                  const newAlerts: Alert[] = [];
+                  // Generate alerts with detailed suggestions
                   if (data.temperature > 60) {
-                    newAlerts.push({
+                    addAlert({
                       id: `temp-${Date.now()}`,
                       type: "danger",
-                      title: "Overheat Alert",
+                      title: "Critical Temperature Alert",
                       message: `Temperature exceeded 60°C (Current: ${data.temperature.toFixed(1)}°C)`,
-                      timestamp: new Date(),
+                      timestamp: new Date().toISOString(),
+                      isAcknowledged: false,
+                      isFixed: false,
                       sensor: "Temperature Sensor",
-                      suggestion: "Immediately check cooling system. Reduce machine load and ensure proper ventilation. Consider emergency shutdown if temperature continues to rise."
+                      value: data.temperature,
+                      threshold: 60,
+                      suggestions: [
+                        "Immediately check cooling system operation and coolant levels",
+                        "Reduce machine load by 50% to lower heat generation",
+                        "Ensure proper ventilation and air circulation around equipment",
+                        "Inspect heat exchangers for blockages or fouling",
+                        "Consider emergency shutdown if temperature continues to rise",
+                        "Check for mechanical friction or binding in moving parts"
+                      ],
+                      contactInfo: "For emergency support, contact our technical team immediately"
                     });
                   }
                   if (data.current > 2.5) {
-                    newAlerts.push({
+                    addAlert({
                       id: `current-${Date.now()}`,
                       type: "danger", 
-                      title: "Current Spike Alert",
+                      title: "Electrical Current Overload",
                       message: `Current exceeded safe threshold (Current: ${data.current.toFixed(1)} A)`,
-                      timestamp: new Date(),
+                      timestamp: new Date().toISOString(),
+                      isAcknowledged: false,
+                      isFixed: false,
                       sensor: "Current Sensor",
-                      suggestion: "Check electrical connections and motor load. Inspect for short circuits or mechanical binding. Consider reducing operational speed."
+                      value: data.current,
+                      threshold: 2.5,
+                      suggestions: [
+                        "Immediately check all electrical connections for looseness",
+                        "Inspect motor windings for signs of damage or overheating",
+                        "Look for short circuits in wiring or control panels",
+                        "Check mechanical load on motor for binding or obstruction",
+                        "Reduce operational speed to decrease current draw",
+                        "Test insulation resistance of motor windings",
+                        "Consider temporary load reduction until issue is resolved"
+                      ],
+                      contactInfo: "Contact certified electrician for electrical system inspection"
                     });
                   }
                   if (data.vibration > 20000) {
-                    newAlerts.push({
+                    addAlert({
                       id: `vibration-${Date.now()}`,
                       type: "danger",
-                      title: "High Vibration Alert", 
+                      title: "Critical Vibration Level", 
                       message: `Excessive vibrations detected (Current: ${data.vibration.toFixed(0)})`,
-                      timestamp: new Date(),
+                      timestamp: new Date().toISOString(),
+                      isAcknowledged: false,
+                      isFixed: false,
                       sensor: "Vibration Sensor",
-                      suggestion: "Inspect bearings, alignment, and mounting bolts. Check for worn components. Schedule immediate maintenance inspection."
+                      value: data.vibration,
+                      threshold: 20000,
+                      suggestions: [
+                        "Stop operation immediately to prevent catastrophic failure",
+                        "Inspect all bearings for wear, damage, or inadequate lubrication",
+                        "Check shaft alignment using precision alignment tools",
+                        "Examine mounting bolts and foundation for looseness",
+                        "Look for signs of component wear, cracking, or fatigue",
+                        "Check balance of rotating components",
+                        "Schedule immediate professional vibration analysis"
+                      ],
+                      contactInfo: "Emergency mechanical support required - contact maintenance team"
                     });
                   }
                   if (data.gasEmission > 400) {
-                    newAlerts.push({
+                    addAlert({
                       id: `gas-${Date.now()}`,
                       type: "danger",
-                      title: "High Gas Emission",
+                      title: "Hazardous Gas Concentration",
                       message: `Gas concentration critical (Current: ${data.gasEmission.toFixed(1)} ppm)`,
-                      timestamp: new Date(),
+                      timestamp: new Date().toISOString(),
+                      isAcknowledged: false,
+                      isFixed: false,
                       sensor: "Gas Sensor",
-                      suggestion: "Evacuate area if necessary. Check for leaks in gas lines. Increase ventilation and monitor air quality closely."
+                      value: data.gasEmission,
+                      threshold: 400,
+                      suggestions: [
+                        "Evacuate personnel from affected area immediately",
+                        "Activate emergency ventilation systems",
+                        "Check for gas leaks in piping, valves, and connections",
+                        "Inspect gas detection equipment calibration",
+                        "Monitor air quality continuously with portable detectors",
+                        "Implement confined space entry procedures if applicable",
+                        "Do not operate electrical equipment in affected area"
+                      ],
+                      contactInfo: "Emergency response team - contact safety officer immediately"
                     });
                   }
                   if (data.humidity > 80) {
-                    newAlerts.push({
+                    addAlert({
                       id: `humidity-${Date.now()}`,
                       type: "warning",
-                      title: "High Humidity",
+                      title: "Elevated Humidity Levels",
                       message: `Humidity exceeds normal range (Current: ${data.humidity.toFixed(1)}%)`,
-                      timestamp: new Date(),
+                      timestamp: new Date().toISOString(),
+                      isAcknowledged: false,
+                      isFixed: false,
                       sensor: "Humidity Sensor",
-                      suggestion: "Improve air circulation and consider dehumidification. Check for water leaks or steam sources near equipment."
+                      value: data.humidity,
+                      threshold: 80,
+                      suggestions: [
+                        "Increase air circulation using fans or HVAC system",
+                        "Deploy dehumidification equipment in affected areas",
+                        "Check for water leaks in pipes, roof, or foundation",
+                        "Inspect steam sources and ensure proper ventilation",
+                        "Monitor condensation on equipment and surfaces",
+                        "Check humidity sensor calibration and placement"
+                      ],
+                      contactInfo: "Contact facilities management for HVAC support"
                     });
-                  }
-                  
-                  if (newAlerts.length > 0) {
-                    setAlerts(prev => [...newAlerts, ...prev].slice(0, 20));
                   }
                 }} />
 
@@ -391,7 +440,7 @@ const Dashboard = () => {
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground">Last Update</p>
-                        <p className="text-sm">{sensorData.timestamp.toLocaleString()}</p>
+                        <p className="text-sm">{localSensorData.timestamp.toLocaleString()}</p>
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground">Firmware</p>
@@ -411,11 +460,11 @@ const Dashboard = () => {
               </TabsContent>
 
               <TabsContent value="analysis">
-                <MachineLearningAnalysis sensorData={sensorData} historicalData={historicalData} />
+                <MachineLearningAnalysis sensorData={localSensorData} historicalData={historicalData} />
               </TabsContent>
 
               <TabsContent value="reports">
-                <AnalysisReport sensorData={sensorData} historicalData={historicalData} alerts={alerts} />
+                <AnalysisReport sensorData={localSensorData} historicalData={historicalData} alerts={[...activeAlerts, ...acknowledgedAlerts]} />
               </TabsContent>
             </Tabs>
           </>

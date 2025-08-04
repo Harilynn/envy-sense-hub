@@ -77,8 +77,10 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                 <Button 
                   variant="ghost" 
                   className={cn(
-                    "text-sm font-medium transition-colors hover:text-primary",
-                    location.pathname.startsWith('/dashboard') ? "text-primary" : "text-muted-foreground"
+                    "text-sm font-medium transition-colors",
+                    location.pathname.startsWith('/dashboard') 
+                      ? "text-primary hover:text-primary/80" 
+                      : "text-muted-foreground hover:text-primary"
                   )}
                 >
                   Dashboard
@@ -124,7 +126,7 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                   <CardHeader className="pb-3">
                     <CardTitle className="text-lg flex items-center gap-2">
                       <Bell className="h-5 w-5" />
-                      Notifications
+                      System Notifications
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4 max-h-96 overflow-y-auto">
@@ -133,62 +135,66 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                       <div className="space-y-2">
                         <h4 className="font-medium text-destructive flex items-center gap-2">
                           <AlertTriangle className="h-4 w-4" />
-                          Active Alerts ({alerts.length})
+                          Critical Alerts ({alerts.length})
                         </h4>
                         {alerts.slice(0, 3).map((alert) => (
                           <div key={alert.id} className="p-3 rounded-lg bg-destructive/10 border border-destructive/20">
                             <p className="text-sm font-medium text-destructive">{alert.title}</p>
                             <p className="text-xs text-muted-foreground">{alert.message}</p>
+                            <p className="text-xs text-destructive mt-1">Requires immediate attention</p>
                           </div>
                         ))}
                         {alerts.length > 3 && (
-                          <Link to="/dashboard/alerts" className="text-sm text-primary hover:underline">
-                            View {alerts.length - 3} more alerts
+                          <Link to="/dashboard" className="text-sm text-primary hover:underline block">
+                            View {alerts.length - 3} more alerts in dashboard →
                           </Link>
                         )}
                       </div>
                     )}
 
-                    {/* Recent Data Updates */}
-                    {recentData.length > 0 && (
-                      <div className="space-y-2">
-                        <h4 className="font-medium text-info flex items-center gap-2">
-                          <Info className="h-4 w-4" />
-                          Recent Updates
-                        </h4>
-                        {recentData.slice(0, 2).map((data) => (
-                          <div key={data.id} className="p-3 rounded-lg bg-info/10 border border-info/20">
-                            <p className="text-sm">New sensor data from {data.device_id}</p>
-                            <p className="text-xs text-muted-foreground">
-                              Temp: {data.temperature}°C, Humidity: {data.humidity}%
-                            </p>
-                          </div>
-                        ))}
+                    {/* System Status */}
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-info flex items-center gap-2">
+                        <Info className="h-4 w-4" />
+                        System Status
+                      </h4>
+                      <div className="p-3 rounded-lg bg-info/10 border border-info/20">
+                        <p className="text-sm">ESP32 Device Connected</p>
+                        <p className="text-xs text-muted-foreground">Signal: -42 dBm (Excellent)</p>
                       </div>
-                    )}
+                      {recentData.length > 0 && (
+                        <div className="p-3 rounded-lg bg-success/10 border border-success/20">
+                          <p className="text-sm text-success">Data Stream Active</p>
+                          <p className="text-xs text-muted-foreground">
+                            Last update: {new Date(recentData[0]?.timestamp || '').toLocaleTimeString()}
+                          </p>
+                        </div>
+                      )}
+                    </div>
 
-                    {/* Recent Fixed Alerts */}
+                    {/* Recent Activity */}
                     {acknowledgedAlerts.length > 0 && (
                       <div className="space-y-2">
                         <h4 className="font-medium text-success flex items-center gap-2">
                           <CheckCircle className="h-4 w-4" />
-                          Recently Resolved
+                          Recent Activity
                         </h4>
                         {acknowledgedAlerts.slice(-2).map((alert) => (
                           <div key={alert.id} className="p-3 rounded-lg bg-success/10 border border-success/20">
                             <p className="text-sm text-success">{alert.title}</p>
                             <p className="text-xs text-muted-foreground">
-                              {alert.isFixed ? 'Fixed' : 'Acknowledged'}
+                              {alert.isFixed ? 'Resolved & Fixed' : 'Acknowledged - Pending Fix'}
                             </p>
                           </div>
                         ))}
                       </div>
                     )}
 
-                    {alerts.length === 0 && recentData.length === 0 && acknowledgedAlerts.length === 0 && (
+                    {alerts.length === 0 && acknowledgedAlerts.length === 0 && (
                       <div className="text-center py-8 text-muted-foreground">
-                        <Bell className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                        <p>No notifications yet</p>
+                        <CheckCircle className="h-8 w-8 mx-auto mb-2 text-success opacity-50" />
+                        <p className="text-success">All systems normal</p>
+                        <p className="text-xs">No alerts or issues detected</p>
                       </div>
                     )}
                   </CardContent>

@@ -103,7 +103,7 @@ export default function HomePage() {
               <Button size="lg" asChild className="group hover-scale bg-white text-primary hover:bg-white/90">
                 <Link to="/dashboard">
                   <Play className="mr-2 h-4 w-4" />
-                  Start Monitoring
+                  Get Started
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
@@ -184,7 +184,7 @@ export default function HomePage() {
               
               <Button size="lg" asChild className="hover-scale bg-success text-white hover:bg-success/90">
                 <Link to="/dashboard">
-                  View Live Status
+                  Try Our Dashboard
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -257,7 +257,7 @@ export default function HomePage() {
           <div className="mt-12">
             <Button size="lg" asChild className="hover-scale bg-gradient-primary text-white">
               <Link to="/dashboard">
-                Try Demo
+                Start Free Trial
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
@@ -276,7 +276,7 @@ export default function HomePage() {
           </p>
           <Button size="lg" asChild className="hover-scale bg-gradient-primary text-white">
             <Link to="/dashboard">
-              Get Started Free
+              Experience SmartMonitor
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
