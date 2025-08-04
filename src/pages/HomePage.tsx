@@ -212,16 +212,16 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="grid gap-4">
-                  <div className="flex justify-between items-center p-4 bg-gradient-purple rounded-lg border border-primary/30">
-                    <span className="text-sm font-semibold text-white">Real-time Analytics</span>
-                    <span className="text-sm font-mono text-white animate-pulse">● ACTIVE</span>
+                  <div className="flex justify-between items-center p-4 bg-gradient-purple bg-opacity-70 rounded-lg border border-primary/30">
+                    <span className="text-sm font-semibold text-white drop-shadow-md">Live Analytics</span>
+                    <span className="text-sm font-mono text-white animate-pulse">● LIVE</span>
                   </div>
-                  <div className="flex justify-between items-center p-4 bg-gradient-success rounded-lg border border-secondary/30">
-                    <span className="text-sm font-semibold text-white">AI Predictions</span>
-                    <span className="text-sm font-mono text-white animate-pulse">● LEARNING</span>
+                  <div className="flex justify-between items-center p-4 bg-gradient-success bg-opacity-70 rounded-lg border border-secondary/30">
+                    <span className="text-sm font-semibold text-white">Predictive Engine</span>
+                    <span className="text-sm font-mono text-white animate-pulse">● TRAINING</span>
                   </div>
-                  <div className="flex justify-between items-center p-4 bg-gradient-primary rounded-lg border border-accent/30">
-                    <span className="text-sm font-semibold text-white">Smart Alerts</span>
+                  <div className="flex justify-between items-center p-4 bg-gradient-primary bg-opacity-70 rounded-lg border border-accent/30">
+                    <span className="text-sm font-semibold text-white">Alert Manager</span>
                     <span className="text-sm font-mono text-white animate-pulse">● READY</span>
                   </div>
                 </div>
