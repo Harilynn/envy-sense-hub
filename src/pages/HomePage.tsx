@@ -200,11 +200,11 @@ export default function HomePage() {
                 <div className="text-center mb-6">
                   <div className="inline-flex items-center gap-4 p-6 bg-gradient-green rounded-2xl mb-4">
                     <div className="p-3 bg-white/20 rounded-full animate-bounce">
-                      <Activity className="h-8 w-8 text-white" />
+                      <Activity className="h-8 w-8 text-black" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-white">Smart Analytics</h3>
-                      <p className="text-white/90">Advanced IoT intelligence</p>
+                      <h3 className="text-2xl font-bold text-green-500">Smart Analytics</h3>
+                      <p className="text-purple-500/90">Advanced IoT intelligence</p>
                     </div>
                     <div className="p-3 bg-white/20 rounded-full animate-pulse">
                       <Sparkles className="h-6 w-6 text-black" />
@@ -213,16 +213,16 @@ export default function HomePage() {
                 </div>
                 <div className="grid gap-4">
                   <div className="flex justify-between items-center p-4 bg-gradient-purple bg-opacity-70 rounded-lg border border-primary/30">
-                    <span className="text-sm font-semibold text-white drop-shadow-md">Live Analytics</span>
-                    <span className="text-sm font-mono text-white animate-pulse">● LIVE</span>
+                    <span className="text-sm font-semibold text-green drop-shadow-md">Live Analytics</span>
+                    <span className="text-sm font-mono text-black animate-pulse">● LIVE</span>
                   </div>
                   <div className="flex justify-between items-center p-4 bg-gradient-success bg-opacity-70 rounded-lg border border-secondary/30">
-                    <span className="text-sm font-semibold text-white">Predictive Engine</span>
-                    <span className="text-sm font-mono text-white animate-pulse">● TRAINING</span>
+                    <span className="text-sm font-semibold text-green">Predictive Engine</span>
+                    <span className="text-sm font-mono text-black animate-pulse">● TRAINING</span>
                   </div>
                   <div className="flex justify-between items-center p-4 bg-gradient-primary bg-opacity-70 rounded-lg border border-accent/30">
-                    <span className="text-sm font-semibold text-white">Alert Manager</span>
-                    <span className="text-sm font-mono text-white animate-pulse">● READY</span>
+                    <span className="text-sm font-semibold text-green">Alert Manager</span>
+                    <span className="text-sm font-mono text-black animate-pulse">● READY</span>
                   </div>
                 </div>
               </Card>
