@@ -114,7 +114,7 @@ export default function HomePage() {
                 className="hover-tech-dramatic hover-tech-glow border-white/30 bg-white/10 text-white hover:bg-accent hover:text-white transition-all duration-300"
               >
                 <Link to="/dashboard">
-                  <BookOpen className="btn-tech-gradient" />
+                  <BookOpen className="mr-2 h-4 w-4" />
                   Try Our Dashboard
                 </Link>
               </Button>
