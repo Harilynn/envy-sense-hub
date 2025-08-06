@@ -39,10 +39,10 @@ export default function ContactPage() {
         {/* Header Section */}
         <div className="text-center mb-12 animate-fade-in">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Contact Us
+            Contact Me
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            How can we help you?
+            How can I help you?
           </p>
           <p className="text-sm text-muted-foreground mt-2">
             Fill in the form or drop an email 📧

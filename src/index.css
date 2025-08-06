@@ -233,3 +233,18 @@ All colors MUST be HSL.
   }
 }
 
+@layer utilities {
+  .btn-tech-gradient {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-full text-white;
+    background: var(--gradient-primary);
+  }
+  .btn-tech-gradient:hover {
+    background: var(--gradient-tech);
+    box-shadow: 0 0 15px var(--shadow-tech);
+  }
+  .btn-tech-gradient:focus,
+  .btn-tech-gradient:active {
+    background: var(--gradient-tech);
+    text-black;
+  }
+}
