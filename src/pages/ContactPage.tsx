@@ -22,7 +22,6 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate form submission
     toast.success("Message sent successfully! We'll get back to you soon.");
     setFormData({ name: "", email: "", subject: "", message: "" });
   };
@@ -32,7 +31,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-bg-accent">
+    <div className="min-h-screen bg-gradient-bg-primary">
       <Navigation activeAlerts={activeAlerts.length} />
       
       <div className="max-w-6xl mx-auto px-4 py-12">
@@ -42,7 +41,7 @@ export default function ContactPage() {
             Contact Us
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            How can we help you?
+            How can I help you?
           </p>
           <p className="text-sm text-muted-foreground mt-2">
             Fill in the form or drop an email 📧
@@ -162,7 +161,7 @@ export default function ContactPage() {
                   <Button 
                     type="submit" 
                     size="lg" 
-                    className="w-full hover-dramatic hover-tech-glow bg-gradient-primary text-white border-0 group"
+                    className="w-full bg-gradient-to-r from-primary to-accent text-white border-0 shadow-md hover:shadow-lg transition-all duration-300 group"
                   >
                     <Send className="mr-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     Submit
@@ -175,10 +174,10 @@ export default function ContactPage() {
 
         {/* Success Message Area */}
         <div className="mt-12 text-center">
-          <Card className="bg-gradient-success border-0 shadow-tech max-w-md mx-auto">
+          <Card className="bg-gradient-to-br from-white via-green-100 to-green-200 border border-success/20 shadow-md max-w-md mx-auto">
             <CardContent className="pt-6">
-              <CheckCircle className="h-12 w-12 text-white mx-auto mb-4" />
-              <p className="text-white font-medium">
+              <CheckCircle className="h-12 w-12 text-green-700 mx-auto mb-4" />
+              <p className="text-green-800 font-medium">
                 Thank you for reaching out! I'll get back to you within 24 hours.
               </p>
             </CardContent>
