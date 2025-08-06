@@ -118,7 +118,7 @@ const Dashboard = () => {
   const allAlertsFixed = acknowledgedAlerts.length > 0 && acknowledgedAlerts.every(alert => alert.isFixed);
 
   return (
-    <div className="min-h-screen bg-gradient-bg-primary">
+    <div className="min-h-screen bg-background">
       <Navigation />
       
       <div className="max-w-7xl mx-auto p-6 space-y-6">
