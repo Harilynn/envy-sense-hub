@@ -118,13 +118,14 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
   variant="ghost" 
   className={cn(
     "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md",
-    location.pathname.startsWith('/dashboard') 
-      ? "bg-primary text-black hover:bg-primary/90"
+    location.pathname.startsWith('/dashboard')
+      ? "bg-primary text-black hover:bg-primary/90" // stays black on hover
       : "text-muted-foreground hover:bg-primary/10 hover:text-black"
   )}
 >
   Dashboard
 </Button>
+
 
 
               </PopoverTrigger>
