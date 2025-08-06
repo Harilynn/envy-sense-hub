@@ -4,11 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { useSensorData } from "@/contexts/SensorDataContext";
-import {
-  Activity,
-  Shield,
-  Bell,
-  Brain,
+import { 
+  Activity, 
+  Shield, 
+  TrendingUp, 
+  Bell, 
+  Brain, 
   BarChart3,
   Zap,
   CheckCircle,
@@ -71,7 +72,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-bg-primary">
       <Navigation activeAlerts={activeAlerts.length} />
-
+      
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-hero">
         <div className="absolute inset-0 bg-black/20" />
@@ -85,42 +86,36 @@ export default function HomePage() {
               <Sparkles className="h-3 w-3 mr-1" />
               Next-Generation Industrial IoT
             </Badge>
-
+            
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white leading-tight">
               Smart Monitoring for
               <br />
               <span className="text-gradient">Healthier Machines</span>
             </h1>
-
+            
             <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-              Transform your industrial operations with AI-powered monitoring.
-              Prevent costly downtime, optimize performance, and ensure the longevity
+              Transform your industrial operations with AI-powered monitoring. 
+              Prevent costly downtime, optimize performance, and ensure the longevity 
               of your critical equipment with real-time insights.
             </p>
-
+            
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              {/* ✅ FIXED: Text turns white on hover */}
-              <Button
-                size="lg"
-                asChild
-                className="group bg-white text-primary hover:bg-gradient-tech hover:text-white hover-tech-dramatic hover-tech-glow transition-all duration-300"
-              >
+              <Button size="lg" asChild className="group hover-tech-dramatic hover-tech-glow bg-white text-primary hover:bg-white/90 transition-all duration-300">
                 <Link to="/dashboard">
-                  <Play className="mr-2 h-4 w-4 group-hover:fill-white group-hover:text-white" />
+                  <Play className="mr-2 h-4 w-4" />
                   Get Started
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:text-white transition-transform" />
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
-
-              <Button
-                size="lg"
-                asChild
-                className="group border-white/30 bg-white/10 text-white hover:bg-gradient-tech hover:text-white hover-tech-dramatic hover-tech-glow transition-all duration-300"
+              <Button 
+                variant="outline" 
+                size="lg" 
+                asChild 
+                className="hover-tech-dramatic hover-tech-glow border-white/30 bg-white/10 text-white hover:bg-accent hover:text-white transition-all duration-300"
               >
                 <Link to="/dashboard">
-                  <BookOpen className="mr-2 h-4 w-4 group-hover:text-white" />
-                  Experience SmartMonitor
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:text-white transition-transform" />
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  Try Our Dashboard
                 </Link>
               </Button>
             </div>
@@ -139,16 +134,16 @@ export default function HomePage() {
               Cutting-edge technology meets industrial reliability
             </p>
           </div>
-
+          
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {features.map((feature, index) => (
-              <Card
-                key={feature.title}
+              <Card 
+                key={feature.title} 
                 className="hover-scale group hover:shadow-lg transition-all duration-300 animate-fade-in border-0 bg-gradient-card backdrop-blur shadow-tech"
-                style={{ animationDelay: `${index * 100}ms` }}
+                style={{ animationDelay: ${index * 100}ms }}
               >
                 <CardHeader>
-                  <div className={`${feature.color} mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className={${feature.color} mb-4 group-hover:scale-110 transition-transform duration-300}>
                     {feature.icon}
                   </div>
                   <CardTitle className="text-xl group-hover:text-primary transition-colors">
@@ -175,23 +170,23 @@ export default function HomePage() {
                 Measurable Results for Your Business
               </h2>
               <p className="text-xl text-muted-foreground">
-                Our customers see immediate improvements in efficiency,
+                Our customers see immediate improvements in efficiency, 
                 cost savings, and operational reliability.
               </p>
-
+              
               <div className="space-y-4">
                 {benefits.map((benefit, index) => (
-                  <div
-                    key={benefit}
+                  <div 
+                    key={benefit} 
                     className="flex items-center gap-3 animate-fade-in"
-                    style={{ animationDelay: `${index * 150}ms` }}
+                    style={{ animationDelay: ${index * 150}ms }}
                   >
                     <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
                     <span className="text-muted-foreground">{benefit}</span>
                   </div>
                 ))}
               </div>
-
+              
               <Button size="lg" asChild className="hover-tech-dramatic hover-tech-glow bg-success text-white hover:bg-success/90 transition-all duration-300">
                 <Link to="/dashboard">
                   Try Our Dashboard
@@ -199,7 +194,6 @@ export default function HomePage() {
                 </Link>
               </Button>
             </div>
-
             <div className="relative animate-scale-in">
               <div className="absolute inset-0 bg-gradient-green rounded-2xl blur-3xl opacity-30 animate-pulse" />
               <Card className="relative bg-gradient-card backdrop-blur border border-primary/20 p-8 shadow-2xl">
@@ -234,6 +228,8 @@ export default function HomePage() {
               </Card>
             </div>
           </div>
+            
+            
         </div>
       </section>
 
@@ -245,24 +241,48 @@ export default function HomePage() {
           </h2>
           <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
             <p>
-              SmartMonitor is an advanced Industrial IoT monitoring solution designed to
-              revolutionize how you maintain and optimize your critical equipment.
-              Our platform combines cutting-edge sensor technology with AI-powered analytics
+              SmartMonitor is an advanced Industrial IoT monitoring solution designed to 
+              revolutionize how you maintain and optimize your critical equipment. 
+              Our platform combines cutting-edge sensor technology with AI-powered analytics 
               to provide unprecedented insights into your industrial operations.
             </p>
             <p>
-              Built for industrial environments, SmartMonitor integrates seamlessly with
-              ESP32 microcontrollers and provides real-time monitoring of temperature,
-              humidity, vibration, gas emissions, and electrical current. Our machine
-              learning algorithms continuously learn from your data to predict maintenance
+              Built for industrial environments, SmartMonitor integrates seamlessly with 
+              ESP32 microcontrollers and provides real-time monitoring of temperature, 
+              humidity, vibration, gas emissions, and electrical current. Our machine 
+              learning algorithms continuously learn from your data to predict maintenance 
               needs and prevent costly equipment failures.
             </p>
             <p>
-              Whether you're managing a single machine or an entire industrial facility,
-              SmartMonitor scales to meet your needs while providing the reliability
+              Whether you're managing a single machine or an entire industrial facility, 
+              SmartMonitor scales to meet your needs while providing the reliability 
               and precision that industrial applications demand.
             </p>
           </div>
+          
+        </div>
+      </section>
+
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-bg-secondary">
+        <div className="max-w-4xl mx-auto px-4 text-center animate-fade-in">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            Ready to Transform Your Operations?
+          </h2>
+          <p className="text-xl text-muted-foreground mb-8">
+            Join the future of industrial monitoring today
+          </p>
+            <Button 
+              size="lg" 
+              asChild 
+              className="hover-tech-dramatic hover-tech-glow bg-accent text-white hover:bg-white hover:text-accent border border-accent transition-all duration-300"
+            >
+              <Link to="/dashboard">
+                Experience SmartMonitor
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
         </div>
       </section>
     </div>
