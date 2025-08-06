@@ -100,18 +100,15 @@ export default function HomePage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <Button
-  size="lg"
-  asChild
-  className="group bg-white text-primary hover:bg-gradient-tech hover:text-white hover-tech-dramatic hover-tech-glow transition-all duration-300"
->
-  <Link to="/dashboard">
-    <Play className="mr-2 h-4 w-4 group-hover:fill-white group-hover:text-white" />
-    Get Started
-    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:text-white transition-transform" />
-  </Link>
-</Button>
+              <Button size="lg" asChild className="group hover-tech-dramatic hover-tech-glow bg-white text-primary hover:bg-white/90 transition-all duration-300">
 
+
+                <Link to="/dashboard">
+                  <Play className="mr-2 h-4 w-4" />
+                  Get Started
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
@@ -192,17 +189,12 @@ export default function HomePage() {
                 ))}
               </div>
               
-              <Button
-  size="lg"
-  asChild
-  className="group bg-white text-primary hover:bg-gradient-tech hover:text-white hover-tech-dramatic hover-tech-glow border border-accent transition-all duration-300"
->
-  <Link to="/dashboard">
-    Experience SmartMonitor
-    <ArrowRight className="ml-2 h-4 w-4 group-hover:text-white transition-transform" />
-  </Link>
-</Button>
-
+              <Button size="lg" asChild className="hover-tech-dramatic hover-tech-glow bg-accent text-white hover:bg-white hover:text-accent border border-accent transition-all duration-300">
+                <Link to="/dashboard">
+                  Try Our Dashboard
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
             </div>
             <div className="relative animate-scale-in">
               <div className="absolute inset-0 bg-gradient-green rounded-2xl blur-3xl opacity-30 animate-pulse" />
