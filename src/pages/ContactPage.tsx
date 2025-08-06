@@ -60,11 +60,12 @@ export default function ContactPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-lg font-semibold">+1 012 345 678</p>
+                <p className="text-lg font-semibold">+91 12345 67809</p>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-card border-0 shadow-tech hover-dramatic">
+            <Card className="bg-white/80 backdrop-blur-sm border border-primary/10 shadow-md hover:shadow-lg transition-all duration-300">
+
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-xl">
                   <Mail className="h-6 w-6 text-primary" />
@@ -76,7 +77,8 @@ export default function ContactPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-card border-0 shadow-tech hover-dramatic">
+            <Card className="bg-white/80 backdrop-blur-sm border border-primary/10 shadow-md hover:shadow-lg transition-all duration-300">
+
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-xl">
                   <Building className="h-6 w-6 text-primary" />
