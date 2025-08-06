@@ -100,8 +100,7 @@ export default function HomePage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <Button size="lg" asChild className="group hover-tech-dramatic hover-tech-glow bg-white text-primary hover:bg-white/90 transition-all duration-300">
-
+              <Button size="lg" asChild className="group hover-tech-dramatic hover-tech-glow bg-gradient-tech text-white hover:text-white transition-all duration-300">
 
                 <Link to="/dashboard">
                   <Play className="mr-2 h-4 w-4" />
@@ -189,7 +188,7 @@ export default function HomePage() {
                 ))}
               </div>
               
-              <Button size="lg" asChild className="hover-tech-dramatic hover-tech-glow bg-accent text-white hover:bg-white hover:text-accent border border-accent transition-all duration-300">
+              <Button size="lg" asChild className="hover-tech-dramatic hover-tech-glow bg-gradient-tech text-white hover:text-white border border-accent transition-all duration-300">
                 <Link to="/dashboard">
                   Try Our Dashboard
                   <ArrowRight className="ml-2 h-4 w-4" />
