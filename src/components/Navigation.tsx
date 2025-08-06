@@ -124,15 +124,16 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                   >
                     <PopoverTrigger asChild>
                       <button
-                        className={cn(
-                          "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md",
-                          location.pathname.startsWith("/dashboard")
-                            ? "bg-primary text-black hover:bg-primary/90"
-                            : "text-muted-foreground hover:bg-primary/10 hover:text-black"
-                        )}
-                      >
-                        Dashboard
-                      </button>
+  className={cn(
+    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
+    location.pathname.startsWith("/dashboard")
+      ? "text-foreground bg-accent"
+      : "text-muted-foreground"
+  )}
+>
+  Dashboard
+</button>
+
                     </PopoverTrigger>
                     <PopoverContent className="w-56 p-2">
                       <div className="space-y-1">
