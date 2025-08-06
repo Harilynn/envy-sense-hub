@@ -22,7 +22,6 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate form submission
     toast.success("Message sent successfully! We'll get back to you soon.");
     setFormData({ name: "", email: "", subject: "", message: "" });
   };
@@ -32,27 +31,28 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-bg-primary">
       <Navigation activeAlerts={activeAlerts.length} />
       
       <div className="max-w-6xl mx-auto px-4 py-12">
         {/* Header Section */}
         <div className="text-center mb-12 animate-fade-in">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Contact Me
+            Contact Us
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            How can I help you?
+            How can we help you?
           </p>
           <p className="text-sm text-muted-foreground mt-2">
-            Fill in the form or drop an email 📧
+            Fill in the form or drop an email ✉️
           </p>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-2">
           {/* Contact Information */}
           <div className="space-y-6 animate-fade-in">
-            <Card className="bg-gradient-card border-0 shadow-tech hover-dramatic">
+            <Card className="bg-white/80 backdrop-blur-sm border border-primary/10 shadow-md hover:shadow-lg transition-all duration-300">
+
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-xl">
                   <Phone className="h-6 w-6 text-primary" />
@@ -60,11 +60,12 @@ export default function ContactPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-lg font-semibold">+1 012 345 678</p>
+                <p className="text-lg font-semibold">+91 12345 67809</p>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-card border-0 shadow-tech hover-dramatic">
+            <Card className="bg-white/80 backdrop-blur-sm border border-primary/10 shadow-md hover:shadow-lg transition-all duration-300">
+
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-xl">
                   <Mail className="h-6 w-6 text-primary" />
@@ -76,7 +77,8 @@ export default function ContactPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-card border-0 shadow-tech hover-dramatic">
+            <Card className="bg-white/80 backdrop-blur-sm border border-primary/10 shadow-md hover:shadow-lg transition-all duration-300">
+
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-xl">
                   <Building className="h-6 w-6 text-primary" />
@@ -162,7 +164,7 @@ export default function ContactPage() {
                   <Button 
                     type="submit" 
                     size="lg" 
-                    className="w-full hover-dramatic hover-tech-glow bg-gradient-primary text-white border-0 group"
+                    className="w-full bg-gradient-to-r from-primary to-accent text-white border-0 shadow-md hover:shadow-lg transition-all duration-300 group"
                   >
                     <Send className="mr-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     Submit
@@ -175,12 +177,13 @@ export default function ContactPage() {
 
         {/* Success Message Area */}
         <div className="mt-12 text-center">
-          <Card className="bg-gradient-success border-0 shadow-tech max-w-md mx-auto">
+          <Card className="bg-white/90 border border-green-300 shadow-lg max-w-md mx-auto">
             <CardContent className="pt-6">
-              <CheckCircle className="h-12 w-12 text-white mx-auto mb-4" />
-              <p className="text-white font-medium">
-                Thank you for reaching out! I'll get back to you within 24 hours.
-              </p>
+              <CheckCircle className="h-12 w-12 text-green-600 mx-auto mb-4" />
+<p className="text-green-700 font-medium">
+  Thank you for reaching out! I'll get back to you within 24 hours.
+</p>
+
             </CardContent>
           </Card>
         </div>

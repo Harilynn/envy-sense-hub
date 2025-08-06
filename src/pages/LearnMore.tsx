@@ -92,7 +92,7 @@ export default function LearnMore() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-bg-secondary">
       <Navigation />
       
       <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">

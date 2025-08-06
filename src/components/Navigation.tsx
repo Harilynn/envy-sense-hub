@@ -4,7 +4,18 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bell, Menu, X, Activity, BarChart3, History, FileText, AlertTriangle, CheckCircle, Info } from "lucide-react";
+import {
+  Bell,
+  Menu,
+  X,
+  Activity,
+  BarChart3,
+  History,
+  FileText,
+  AlertTriangle,
+  CheckCircle,
+  Info,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSensorData } from "@/contexts/SensorDataContext";
 
@@ -18,7 +29,7 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const location = useLocation();
   const { getActiveAlerts, getAcknowledgedAlerts, sensorData } = useSensorData();
-  
+
   const alerts = getActiveAlerts();
   const acknowledgedAlerts = getAcknowledgedAlerts();
   const recentData = sensorData.slice(-5);
@@ -28,14 +39,8 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
     { name: "Features", path: "/#features" },
     { name: "About", path: "/#about" },
     { name: "Contact", path: "/contact" },
+    { name: "Dashboard", path: "/dashboard" },
   ];
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   const dashboardItems = [
     { name: "Live Dashboard", path: "/dashboard", icon: BarChart3 },
@@ -43,6 +48,13 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
     { name: "Analysis", path: "/dashboard/analysis", icon: Activity },
     { name: "Reports", path: "/dashboard/reports", icon: FileText },
   ];
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   const isActive = (path: string) => {
     if (path === "/" && location.pathname === "/") return true;
@@ -73,30 +85,78 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                 return (
                   <button
                     key={item.name}
-                    onClick={() => scrollToSection('features')}
+                    onClick={() => scrollToSection("features")}
                     className={cn(
                       "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
-                      location.pathname === "/" && location.hash === "#features" ? "text-foreground bg-accent" : "text-muted-foreground"
+                      location.pathname === "/" && location.hash === "#features"
+                        ? "text-foreground bg-accent"
+                        : "text-muted-foreground"
                     )}
                   >
                     {item.name}
                   </button>
                 );
               }
+
               if (item.name === "About") {
                 return (
                   <button
                     key={item.name}
-                    onClick={() => scrollToSection('about')}
+                    onClick={() => scrollToSection("about")}
                     className={cn(
                       "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
-                      location.pathname === "/" && location.hash === "#about" ? "text-foreground bg-accent" : "text-muted-foreground"
+                      location.pathname === "/" && location.hash === "#about"
+                        ? "text-foreground bg-accent"
+                        : "text-muted-foreground"
                     )}
                   >
                     {item.name}
                   </button>
                 );
               }
+
+              if (item.name === "Dashboard") {
+                return (
+                  <Popover
+                    key="Dashboard"
+                    open={isDashboardOpen}
+                    onOpenChange={setIsDashboardOpen}
+                  >
+                    <PopoverTrigger asChild>
+                      <button
+  className={cn(
+    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
+    location.pathname.startsWith("/dashboard")
+      ? "text-foreground bg-accent"
+      : "text-muted-foreground"
+  )}
+>
+  Dashboard
+</button>
+
+                    </PopoverTrigger>
+                    <PopoverContent className="w-56 p-2">
+                      <div className="space-y-1">
+                        {dashboardItems.map((subItem) => (
+                          <Link
+                            key={subItem.name}
+                            to={subItem.path}
+                            className={cn(
+                              "flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors hover:bg-accent hover:text-white",
+                              location.pathname === subItem.path ? "bg-accent text-white" : ""
+                            )}
+                            onClick={() => setIsDashboardOpen(false)}
+                          >
+                            <subItem.icon className="h-4 w-4" />
+                            {subItem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                );
+              }
+
               return (
                 <Link
                   key={item.name}
@@ -110,46 +170,10 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                 </Link>
               );
             })}
-            
-            {/* Dashboard with Dropdown */}
-            <Popover open={isDashboardOpen} onOpenChange={setIsDashboardOpen}>
-              <PopoverTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  className={cn(
-                    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
-                    location.pathname.startsWith('/dashboard') 
-                      ? "text-foreground bg-gradient-to-r from-primary/10 to-accent/10" 
-                      : "text-muted-foreground hover:text-muted-foreground"
-                  )}
-                >
-                  Dashboard
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-56 p-2">
-                <div className="space-y-1">
-                  {dashboardItems.map((item) => (
-                    <Link
-                      key={item.name}
-                      to={item.path}
-                      className={cn(
-                        "flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors hover:bg-accent hover:text-white",
-                        isActive(item.path) ? "bg-accent text-white" : ""
-                      )}
-                      onClick={() => setIsDashboardOpen(false)}
-                    >
-                      <item.icon className="h-4 w-4" />
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
-              </PopoverContent>
-            </Popover>
           </div>
 
           {/* Notifications & Mobile Menu */}
           <div className="flex items-center space-x-2">
-            {/* Enhanced Notification Panel */}
             <Popover open={isNotificationOpen} onOpenChange={setIsNotificationOpen}>
               <PopoverTrigger asChild>
                 <Button variant="outline" size="sm" className="relative">
@@ -170,13 +194,12 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4 max-h-96 overflow-y-auto">
-                    {/* Active Alert Summary Banner */}
                     {alerts.length > 0 && (
                       <div className="p-3 rounded-lg bg-destructive border border-destructive/20 mb-4">
                         <div className="flex items-center justify-center text-white">
                           <AlertTriangle className="h-4 w-4 mr-2 animate-pulse" />
                           <span className="font-medium">
-                            {alerts.length} active alert{alerts.length > 1 ? 's' : ''}: Immediate attention required
+                            {alerts.length} active alert{alerts.length > 1 ? "s" : ""}: Immediate attention required
                           </span>
                         </div>
                       </div>
@@ -218,7 +241,7 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                         <div className="p-3 rounded-lg bg-success/10 border border-success/20">
                           <p className="text-sm text-success">Data Stream Active</p>
                           <p className="text-xs text-muted-foreground">
-                            Last update: {new Date(recentData[0]?.timestamp || '').toLocaleTimeString()}
+                            Last update: {new Date(recentData[0]?.timestamp || "").toLocaleTimeString()}
                           </p>
                         </div>
                       )}
@@ -235,46 +258,10 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                           <div key={alert.id} className="p-3 rounded-lg bg-success/10 border border-success/20">
                             <p className="text-sm text-success">{alert.title}</p>
                             <p className="text-xs text-muted-foreground">
-                              {alert.isFixed ? 'Resolved & Fixed' : 'Acknowledged - Pending Fix'}
+                              {alert.isFixed ? "Resolved & Fixed" : "Acknowledged - Pending Fix"}
                             </p>
                           </div>
                         ))}
-                      </div>
-                    )}
-
-                    {/* System Status Summary */}
-                    <div className="space-y-2">
-                      <h4 className="font-medium text-info flex items-center gap-2">
-                        <Info className="h-4 w-4" />
-                        System Overview
-                      </h4>
-                      <div className="grid gap-2">
-                        <div className="p-3 rounded-lg bg-success/10 border border-success/20">
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm">ESP32 Status</span>
-                            <span className="text-xs text-success">● Online</span>
-                          </div>
-                        </div>
-                        <div className="p-3 rounded-lg bg-info/10 border border-info/20">
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm">Data Collection</span>
-                            <span className="text-xs text-info">● Active</span>
-                          </div>
-                        </div>
-                        <div className="p-3 rounded-lg bg-primary/10 border border-primary/20">
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm">AI Analysis</span>
-                            <span className="text-xs text-primary">● Processing</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {alerts.length === 0 && acknowledgedAlerts.length === 0 && (
-                      <div className="text-center py-8 text-muted-foreground">
-                        <CheckCircle className="h-8 w-8 mx-auto mb-2 text-success opacity-50" />
-                        <p className="text-success">All systems normal</p>
-                        <p className="text-xs">No alerts or issues detected</p>
                       </div>
                     )}
                   </CardContent>
@@ -282,7 +269,7 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
               </PopoverContent>
             </Popover>
 
-            {/* Mobile menu button */}
+            {/* Mobile Menu Button */}
             <Button
               variant="ghost"
               size="sm"
@@ -293,110 +280,7 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
             </Button>
           </div>
         </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden py-4 border-t animate-fade-in">
-            <div className="flex flex-col space-y-2">
-              {navItems.map((item) => {
-                if (item.name === "Features") {
-                  return (
-                    <button
-                      key={item.name}
-                      onClick={() => {
-                        scrollToSection('features');
-                        setIsMenuOpen(false);
-                      }}
-                      className={cn(
-                        "block px-3 py-2 rounded-md text-sm font-medium transition-colors text-left w-full",
-                        location.pathname === "/" && location.hash === "#features"
-                          ? "bg-primary/10 text-primary"
-                          : "text-muted-foreground hover:text-primary hover:bg-accent/50"
-                      )}
-                    >
-                      {item.name}
-                    </button>
-                  );
-                }
-                if (item.name === "About") {
-                  return (
-                    <button
-                      key={item.name}
-                      onClick={() => {
-                        scrollToSection('about');
-                        setIsMenuOpen(false);
-                      }}
-                      className={cn(
-                        "block px-3 py-2 rounded-md text-sm font-medium transition-colors text-left w-full",
-                        location.pathname === "/" && location.hash === "#about"
-                          ? "bg-primary/10 text-primary"
-                          : "text-muted-foreground hover:text-primary hover:bg-accent/50"
-                      )}
-                    >
-                      {item.name}
-                    </button>
-                  );
-                }
-                return (
-                  <Link
-                    key={item.name}
-                    to={item.path}
-                    className={cn(
-                      "block px-3 py-2 rounded-md text-sm font-medium transition-colors",
-                      isActive(item.path)
-                        ? "bg-primary/10 text-primary"
-                        : "text-muted-foreground hover:text-primary hover:bg-accent/50"
-                    )}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                );
-              })}
-              
-              {/* Mobile Dashboard Items */}
-              <div className="pt-2 border-t">
-                <p className="px-3 py-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                  Dashboard
-                </p>
-                {dashboardItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.path}
-                    className={cn(
-                      "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors",
-                      isActive(item.path)
-                        ? "bg-primary/10 text-primary"
-                        : "text-muted-foreground hover:text-primary hover:bg-accent/50"
-                    )}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <item.icon className="h-4 w-4" />
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
-
-      {/* Active Alert Banner */}
-      {alerts.length > 0 && (
-        <div className="bg-destructive/10 border-b border-destructive/20 animate-fade-in">
-          <div className="max-w-7xl mx-auto px-4 py-2">
-            <div className="flex items-center justify-center text-sm">
-              <AlertTriangle className="h-4 w-4 text-destructive mr-2 animate-pulse" />
-              <span className="text-destructive font-medium">
-                {alerts.length} active alert{alerts.length > 1 ? 's' : ''}: Immediate attention required
-              </span>
-              <Link to="/dashboard/alerts" className="ml-2 text-destructive hover:underline font-medium">
-                View Details →
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
     </nav>
   );
 };
