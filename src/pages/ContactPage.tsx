@@ -41,17 +41,18 @@ export default function ContactPage() {
             Contact Us
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            How can I help you?
+            How can we help you?
           </p>
           <p className="text-sm text-muted-foreground mt-2">
-            Fill in the form or drop an email 📧
+            Fill in the form or drop an email ✉️
           </p>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-2">
           {/* Contact Information */}
           <div className="space-y-6 animate-fade-in">
-            <Card className="bg-gradient-card border-0 shadow-tech hover-dramatic">
+            <Card className="bg-white/80 backdrop-blur-sm border border-primary/10 shadow-md hover:shadow-lg transition-all duration-300">
+
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-xl">
                   <Phone className="h-6 w-6 text-primary" />
@@ -174,12 +175,13 @@ export default function ContactPage() {
 
         {/* Success Message Area */}
         <div className="mt-12 text-center">
-          <Card className="bg-gradient-to-br from-white via-green-100 to-green-200 border border-success/20 shadow-md max-w-md mx-auto">
+          <Card className="bg-white/90 border border-green-300 shadow-lg max-w-md mx-auto">
             <CardContent className="pt-6">
-              <CheckCircle className="h-12 w-12 text-green-700 mx-auto mb-4" />
-              <p className="text-green-800 font-medium">
-                Thank you for reaching out! I'll get back to you within 24 hours.
-              </p>
+              <CheckCircle className="h-12 w-12 text-green-600 mx-auto mb-4" />
+<p className="text-green-700 font-medium">
+  Thank you for reaching out! I'll get back to you within 24 hours.
+</p>
+
             </CardContent>
           </Card>
         </div>
