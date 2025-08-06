@@ -28,6 +28,7 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
     { name: "Features", path: "/#features" },
     { name: "About", path: "/#about" },
     { name: "Contact", path: "/contact" },
+    { name: "Dashboard", path: "/dashboard" },
   ];
 
   const scrollToSection = (sectionId: string) => {
@@ -117,14 +118,15 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                 <Button 
   variant="ghost" 
   className={cn(
-    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md",
-    location.pathname.startsWith('/dashboard')
-      ? "bg-primary text-black hover:bg-primary/90" // stays black on hover
-      : "text-muted-foreground hover:bg-primary/10 hover:text-black"
+    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
+    location.pathname.startsWith('/dashboard') 
+      ? "text-foreground bg-gradient-card border border-primary/20" 
+      : "text-muted-foreground hover:text-muted-foreground"
   )}
 >
   Dashboard
 </Button>
+
 
 
 
