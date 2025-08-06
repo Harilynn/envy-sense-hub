@@ -145,10 +145,10 @@ export default function HomePage() {
               <Card 
                 key={feature.title} 
                 className="hover-scale group hover:shadow-lg transition-all duration-300 animate-fade-in border-0 bg-gradient-card backdrop-blur shadow-tech"
-                style={{ animationDelay: `${index * 100}ms` }}
+                style={{ animationDelay: ${index * 100}ms }}
               >
                 <CardHeader>
-                  <div className={`${feature.color} mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className={${feature.color} mb-4 group-hover:scale-110 transition-transform duration-300}>
                     {feature.icon}
                   </div>
                   <CardTitle className="text-xl group-hover:text-primary transition-colors">
@@ -184,7 +184,7 @@ export default function HomePage() {
                   <div 
                     key={benefit} 
                     className="flex items-center gap-3 animate-fade-in"
-                    style={{ animationDelay: `${index * 150}ms` }}
+                    style={{ animationDelay: ${index * 150}ms }}
                   >
                     <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
                     <span className="text-muted-foreground">{benefit}</span>
@@ -192,17 +192,12 @@ export default function HomePage() {
                 ))}
               </div>
               
-              <Button
-  size="lg"
-  asChild
-  className="group bg-white text-primary hover:bg-gradient-tech hover:text-white hover-tech-dramatic hover-tech-glow border border-accent transition-all duration-300"
->
-  <Link to="/dashboard">
-    Experience SmartMonitor
-    <ArrowRight className="ml-2 h-4 w-4 group-hover:text-white transition-transform" />
-  </Link>
-</Button>
-
+              <Button size="lg" asChild className="hover-tech-dramatic hover-tech-glow bg-success text-white hover:bg-success/90 transition-all duration-300">
+                <Link to="/dashboard">
+                  Try Our Dashboard
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
             </div>
             <div className="relative animate-scale-in">
               <div className="absolute inset-0 bg-gradient-green rounded-2xl blur-3xl opacity-30 animate-pulse" />
@@ -283,16 +278,17 @@ export default function HomePage() {
           <p className="text-xl text-muted-foreground mb-8">
             Join the future of industrial monitoring today
           </p>
-            <Button 
-              size="lg" 
-              asChild 
-              className="hover-tech-dramatic hover-tech-glow bg-accent text-white hover:bg-white hover:text-accent border border-accent transition-all duration-300"
-            >
-              <Link to="/dashboard">
-                Experience SmartMonitor
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
+            <Button
+  size="lg"
+  asChild
+  className="group bg-white text-primary hover:bg-gradient-tech hover:text-white hover-tech-dramatic hover-tech-glow border border-accent transition-all duration-300"
+>
+  <Link to="/dashboard">
+    Experience SmartMonitor
+    <ArrowRight className="ml-2 h-4 w-4 group-hover:text-white transition-transform" />
+  </Link>
+</Button>
+
         </div>
       </section>
     </div>
