@@ -119,7 +119,7 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
                   className={cn(
                     "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
                     location.pathname.startsWith('/dashboard') 
-                      ? "text-foreground bg-gradient-card border border-primary/20" 
+                      ? "text-foreground bg-gradient-to-r from-primary/10 to-accent/10" 
                       : "text-muted-foreground hover:text-muted-foreground"
                   )}
                 >
