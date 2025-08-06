@@ -70,47 +70,60 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => {
-              if (item.name === "Features") {
-                return (
-                  <button
-                    key={item.name}
-                    onClick={() => scrollToSection('features')}
-                    className={cn(
-                      "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
-                      location.pathname === "/" && location.hash === "#features" ? "text-foreground bg-accent" : "text-muted-foreground"
-                    )}
-                  >
-                    {item.name}
-                  </button>
-                );
-              }
-              if (item.name === "About") {
-                return (
-                  <button
-                    key={item.name}
-                    onClick={() => scrollToSection('about')}
-                    className={cn(
-                      "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
-                      location.pathname === "/" && location.hash === "#about" ? "text-foreground bg-accent" : "text-muted-foreground"
-                    )}
-                  >
-                    {item.name}
-                  </button>
-                );
-              }
-              return (
-                <Link
-                  key={item.name}
-                  to={item.path}
-                  className={cn(
-                    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
-                    isActive(item.path) ? "text-foreground bg-accent" : "text-muted-foreground"
-                  )}
-                >
-                  {item.name}
-                </Link>
-              );
-            })}
+  if (item.name === "Dashboard") {
+    return (
+      <Popover key="Dashboard" open={isDashboardOpen} onOpenChange={setIsDashboardOpen}>
+        <PopoverTrigger asChild>
+          <button
+            className={cn(
+              "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md",
+              location.pathname.startsWith('/dashboard')
+                ? "bg-primary text-black hover:bg-primary/90"
+                : "text-muted-foreground hover:bg-primary/10 hover:text-black"
+            )}
+          >
+            Dashboard
+          </button>
+        </PopoverTrigger>
+        <PopoverContent className="w-56 p-2">
+          <div className="space-y-1">
+            {dashboardItems.map((sub) => (
+              <Link
+                key={sub.name}
+                to={sub.path}
+                className={cn(
+                  "flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors hover:bg-accent hover:text-white",
+                  location.pathname === sub.path ? "bg-accent text-white" : ""
+                )}
+                onClick={() => setIsDashboardOpen(false)}
+              >
+                <sub.icon className="h-4 w-4" />
+                {sub.name}
+              </Link>
+            ))}
+          </div>
+        </PopoverContent>
+      </Popover>
+    );
+  }
+
+  // Normal nav items
+  return (
+    <Link
+      key={item.name}
+      to={item.path}
+      className={cn(
+        "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md",
+        isActive(item.path)
+          ? "bg-primary text-black hover:bg-primary/90"
+          : "text-muted-foreground hover:bg-primary/10 hover:text-black"
+      )}
+    >
+      {item.name}
+    </Link>
+  );
+})}
+
             
             {/* Dashboard with Dropdown */}
             <Popover open={isDashboardOpen} onOpenChange={setIsDashboardOpen}>
