@@ -115,16 +115,17 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
             <Popover open={isDashboardOpen} onOpenChange={setIsDashboardOpen}>
               <PopoverTrigger asChild>
                 <Button 
-                  variant="ghost" 
-                  className={cn(
-                    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
-                    location.pathname.startsWith('/dashboard') 
-                      ? "text-foreground bg-gradient-card border border-primary/20" 
-                      : "text-muted-foreground hover:text-muted-foreground"
-                  )}
-                >
-                  Dashboard
-                </Button>
+  variant="ghost" 
+  className={cn(
+    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md",
+    location.pathname.startsWith('/dashboard') 
+      ? "text-black bg-primary hover:bg-primary/90"
+      : "text-muted-foreground hover:bg-primary/10 hover:text-black"
+  )}
+>
+  Dashboard
+</Button>
+
               </PopoverTrigger>
               <PopoverContent className="w-56 p-2">
                 <div className="space-y-1">
