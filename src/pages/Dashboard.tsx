@@ -214,8 +214,8 @@ const Dashboard = () => {
                     unit="ppm"
                     status={getGasStatus(localSensorData.gasEmission)}
                     icon={<AlertTriangle className="h-4 w-4" />}
-                    threshold={{ min: 0, max: 400 }}
-                    trend={localSensorData.gasEmission > 300 ? "up" : localSensorData.gasEmission < 150 ? "down" : "stable"}
+                    threshold={{ min: 0, max: 5000 }}
+                    trend={localSensorData.gasEmission > 2000 ? "up" : localSensorData.gasEmission < 1000 ? "down" : "stable"}
                   />
                   <SensorCard
                     title="Vibration"
@@ -260,7 +260,7 @@ const Dashboard = () => {
                         data={historicalData.gasEmission}
                         unit="ppm"
                         color="hsl(var(--warning))"
-                        threshold={{ max: 400 }}
+                        threshold={{ max: 5000 }}
                       />
                     </div>
                     <div className="grid gap-4 md:grid-cols-2">
@@ -409,7 +409,7 @@ const Dashboard = () => {
                       contactInfo: "Emergency mechanical support required - contact maintenance team"
                     });
                   }
-                  if (data.gasEmission > 400) {
+                  if (data.gasEmission > 5000) {
                     addAlert({
                       id: `gas-${Date.now()}`,
                       type: "danger",
