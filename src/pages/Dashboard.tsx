@@ -420,7 +420,7 @@ const Dashboard = () => {
                       isFixed: false,
                       sensor: "Gas Sensor",
                       value: data.gasEmission,
-                      threshold: 5000,
+                      threshold: 400,
                       suggestions: [
                         "Evacuate personnel from affected area immediately",
                         "Activate emergency ventilation systems",
