@@ -100,7 +100,7 @@ export default function HomePage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <Button size="lg" asChild className="group hover-tech-dramatic hover-tech-glow bg-white text-primary hover:text-white transition-all duration-300"
+              <Button size="lg" asChild className="group hover-tech-dramatic hover-tech-glow bg-white text-primary hover:text-white transition-all duration-300">
 
                 <Link to="/dashboard">
                   <Play className="mr-2 h-4 w-4" />
