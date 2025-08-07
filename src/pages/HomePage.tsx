@@ -70,7 +70,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-bg-primary">
       <Navigation activeAlerts={activeAlerts.length} />
       
       {/* Hero Section */}
@@ -100,7 +100,8 @@ export default function HomePage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <Button size="lg" asChild className="group hover-dramatic hover-tech-glow bg-white text-primary hover:bg-white/90 transition-all duration-300">
+              <Button size="lg" asChild className="group hover-tech-dramatic hover-tech-glow bg-white text-primary hover:text-white transition-all duration-300">
+
                 <Link to="/dashboard">
                   <Play className="mr-2 h-4 w-4" />
                   Get Started
@@ -111,11 +112,11 @@ export default function HomePage() {
                 variant="outline" 
                 size="lg" 
                 asChild 
-                className="hover-dramatic hover-tech-glow border-white/30 bg-white/10 text-white hover:bg-accent hover:text-white transition-all duration-300"
+                className="hover-tech-dramatic hover-tech-glow border-white/30 bg-white/10 text-white hover:bg-accent hover:text-white transition-all duration-300"
               >
-                <Link to="/learn-more">
+                <Link to="/dashboard">
                   <BookOpen className="mr-2 h-4 w-4" />
-                  Learn More
+                  Try Our Dashboard
                 </Link>
               </Button>
             </div>
@@ -124,7 +125,7 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 bg-gradient-section-primary">
+      <section id="features" className="py-20 bg-gradient-bg-secondary">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
@@ -162,7 +163,7 @@ export default function HomePage() {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-20">
+      <section className="py-20 bg-gradient-bg-accent">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid gap-12 lg:grid-cols-2 items-center">
             <div className="space-y-8 animate-fade-in">
@@ -187,7 +188,7 @@ export default function HomePage() {
                 ))}
               </div>
               
-              <Button size="lg" asChild className="hover-dramatic hover-tech-glow bg-success text-white hover:bg-success/90 transition-all duration-300">
+              <Button size="lg" asChild className="hover-tech-dramatic hover-tech-glow bg-success text-white hover:bg-success/90 transition-all duration-300">
                 <Link to="/dashboard">
                   Try Our Dashboard
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -234,7 +235,7 @@ export default function HomePage() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-gradient-section-accent">
+      <section id="about" className="py-20 bg-gradient-bg-primary">
         <div className="max-w-4xl mx-auto px-4 text-center animate-fade-in">
           <h2 className="text-3xl sm:text-4xl font-bold mb-8">
             About SmartMonitor
@@ -265,7 +266,7 @@ export default function HomePage() {
 
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-section-primary">
+      <section className="py-20 bg-gradient-bg-secondary">
         <div className="max-w-4xl mx-auto px-4 text-center animate-fade-in">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             Ready to Transform Your Operations?
@@ -276,7 +277,8 @@ export default function HomePage() {
             <Button 
               size="lg" 
               asChild 
-              className="hover-dramatic hover-tech-glow bg-accent text-white hover:bg-white hover:text-accent border border-accent transition-all duration-300"
+              className="hover-tech-dramatic hover-tech-glow bg-accent text-white hover:text-white border border-accent transition-all duration-300"
+
             >
               <Link to="/dashboard">
                 Experience SmartMonitor
