@@ -277,7 +277,8 @@ export default function HomePage() {
             <Button 
               size="lg" 
               asChild 
-              className="hover-tech-dramatic hover-tech-glow bg-accent text-white hover:bg-white hover:text-accent border border-accent transition-all duration-300"
+              className="hover-tech-dramatic hover-tech-glow bg-accent text-white hover:text-white border border-accent transition-all duration-300"
+
             >
               <Link to="/dashboard">
                 Experience SmartMonitor
