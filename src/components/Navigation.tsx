@@ -28,6 +28,7 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
     { name: "Features", path: "/#features" },
     { name: "About", path: "/#about" },
     { name: "Contact", path: "/contact" },
+    { name: "Dashboard", path: "/dashboard" },
   ];
 
   const scrollToSection = (sectionId: string) => {
@@ -115,16 +116,20 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
             <Popover open={isDashboardOpen} onOpenChange={setIsDashboardOpen}>
               <PopoverTrigger asChild>
                 <Button 
-                  variant="ghost" 
-                  className={cn(
-                    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
-                    location.pathname.startsWith('/dashboard') 
-                      ? "text-foreground bg-gradient-card border border-primary/20" 
-                      : "text-muted-foreground hover:text-muted-foreground"
-                  )}
-                >
-                  Dashboard
-                </Button>
+  variant="ghost" 
+  className={cn(
+    "text-sm font-medium transition-all duration-200 px-3 py-2 rounded-md hover:bg-primary/5",
+    location.pathname.startsWith('/dashboard') 
+      ? "text-foreground bg-gradient-card border border-primary/20" 
+      : "text-muted-foreground hover:text-muted-foreground"
+  )}
+>
+  Dashboard
+</Button>
+
+
+
+
               </PopoverTrigger>
               <PopoverContent className="w-56 p-2">
                 <div className="space-y-1">
