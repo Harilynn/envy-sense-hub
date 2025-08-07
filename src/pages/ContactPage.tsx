@@ -32,7 +32,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-bg-accent">
       <Navigation activeAlerts={activeAlerts.length} />
       
       <div className="max-w-6xl mx-auto px-4 py-12">
