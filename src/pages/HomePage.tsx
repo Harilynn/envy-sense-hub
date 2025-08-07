@@ -139,24 +139,25 @@ export default function HomePage() {
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {features.map((feature, index) => (
               <Card 
-                key={feature.title} 
-                className="hover-scale group hover:shadow-lg transition-all duration-300 animate-fade-in border-0 bg-gradient-card backdrop-blur shadow-tech"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <CardHeader>
-                  <div className={`${feature.color} mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    {feature.icon}
-                  </div>
-                  <CardTitle className="text-xl group-hover:text-primary transition-colors">
-                    {feature.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
+  key={feature.title} 
+  className="bg-gradient-to-br from-[#f0faff] via-[#e6f7ff] to-[#d0f4f7] shadow-md border-none"
+  style={{ animationDelay: `${index * 100}ms` }}
+>
+  <CardHeader>
+    <div className={`${feature.color} mb-4 group-hover:scale-110 transition-transform duration-300`}>
+      {feature.icon}
+    </div>
+    <CardTitle className="text-xl text-black transition-none">
+      {feature.title}
+    </CardTitle>
+  </CardHeader>
+  <CardContent>
+    <p className="text-muted-foreground leading-relaxed">
+      {feature.description}
+    </p>
+  </CardContent>
+</Card>
+
             ))}
           </div>
         </div>
