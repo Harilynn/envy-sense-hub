@@ -140,7 +140,7 @@ export default function HomePage() {
             {features.map((feature, index) => (
               <Card 
   key={feature.title} 
-  className="bg-gradient-to-br from-[#f0faff] via-[#e6f7ff] to-[#d0f4f7] shadow-md border-none"
+  className="bg-gradient-to-br from-white via-[#e8f5f5] to-[#dff9f9] hover-scale group hover:shadow-lg transition-all duration-300 animate-fade-in border-0 backdrop-blur shadow-tech"
   style={{ animationDelay: `${index * 100}ms` }}
 >
   <CardHeader>
@@ -157,6 +157,7 @@ export default function HomePage() {
     </p>
   </CardContent>
 </Card>
+
 
             ))}
           </div>
