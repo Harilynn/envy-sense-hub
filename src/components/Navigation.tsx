@@ -280,6 +280,22 @@ export const Navigation = ({ activeAlerts = 0 }: NavigationProps) => {
           </div>
         </div>
       </div>
+       {/* Active Alert Banner */}
+      {alerts.length > 0 && (
+        <div className="bg-destructive/10 border-b border-destructive/20 animate-fade-in">
+          <div className="max-w-7xl mx-auto px-4 py-2">
+            <div className="flex items-center justify-center text-sm">
+              <AlertTriangle className="h-4 w-4 text-destructive mr-2 animate-pulse" />
+              <span className="text-destructive font-medium">
+                {alerts.length} active alert{alerts.length > 1 ? 's' : ''}: Immediate attention required
+              </span>
+              <Link to="/dashboard/alerts" className="ml-2 text-destructive hover:underline font-medium">
+                View Details →
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
