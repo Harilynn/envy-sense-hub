@@ -409,13 +409,17 @@ const Dashboard = () => {
                       contactInfo: "Emergency mechanical support required - contact maintenance team"
                     });
                   }
-                  const existingGasAlert = getActiveAlerts().find(
-  (alert) => alert.sensor === "Gas Sensor"
+                  const existingGasDanger = getActiveAlerts().find(
+  (alert) => alert.sensor === "Gas Sensor" && alert.type === "danger"
 );
 
-// Danger level (>5000)
+const existingGasWarning = getActiveAlerts().find(
+  (alert) => alert.sensor === "Gas Sensor" && alert.type === "warning"
+);
+
+
 if (data.gasEmission >= 5000) {
-  if (!existingGasAlert || existingGasAlert.type !== "danger") {
+  if (!existingGasDanger) {
     addAlert({
       id: `gas-${Date.now()}`,
       type: "danger",
@@ -435,11 +439,8 @@ if (data.gasEmission >= 5000) {
       contactInfo: "Call safety team immediately"
     });
   }
-}
-
-// Warning level (2000–5000)
-else if (data.gasEmission >= 2000) {
-  if (!existingGasAlert || existingGasAlert.type !== "warning") {
+} else if (data.gasEmission >= 2000) {
+  if (!existingGasWarning) {
     addAlert({
       id: `gas-${Date.now()}`,
       type: "warning",
@@ -459,12 +460,13 @@ else if (data.gasEmission >= 2000) {
       contactInfo: "Notify facilities team"
     });
   }
-}
-
-// Normal level (<2000)
-else {
-  if (existingGasAlert && !existingGasAlert.isFixed) {
-    markAlertFixed(existingGasAlert.id);
+} else {
+  // Clear both warning and danger if gas is normal
+  if (existingGasDanger && !existingGasDanger.isFixed) {
+    markAlertFixed(existingGasDanger.id);
+  }
+  if (existingGasWarning && !existingGasWarning.isFixed) {
+    markAlertFixed(existingGasWarning.id);
   }
 }
 
