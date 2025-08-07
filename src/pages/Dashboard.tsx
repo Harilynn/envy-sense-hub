@@ -413,62 +413,61 @@ const Dashboard = () => {
   (alert) => alert.sensor === "Gas Sensor"
 );
 
-// Gas > 5000 → Critical
+// Danger level (>5000)
 if (data.gasEmission >= 5000) {
   if (!existingGasAlert || existingGasAlert.type !== "danger") {
     addAlert({
       id: `gas-${Date.now()}`,
       type: "danger",
-      title: "Critical Gas Concentration",
-      message: `Gas concentration extremely high (Current: ${data.gasEmission.toFixed(1)} ppm)`,
-      timestamp: new Date().toISOString(),
-      isAcknowledged: false,
-      isFixed: false,
+      title: "Critical Gas Emission",
+      message: `Gas concentration is critically high (${data.gasEmission.toFixed(1)} ppm)`,
       sensor: "Gas Sensor",
       value: data.gasEmission,
       threshold: 5000,
+      timestamp: new Date().toISOString(),
+      isAcknowledged: false,
+      isFixed: false,
       suggestions: [
         "Evacuate area immediately",
-        "Activate emergency ventilation systems",
-        "Check gas detectors and safety valves",
-        "Contact safety officer and emergency response team"
+        "Check gas leakage points",
+        "Activate emergency ventilation"
       ],
-      contactInfo: "Contact safety team immediately"
+      contactInfo: "Call safety team immediately"
     });
   }
 }
 
-// Gas > 2000 → Warning
+// Warning level (2000–5000)
 else if (data.gasEmission >= 2000) {
   if (!existingGasAlert || existingGasAlert.type !== "warning") {
     addAlert({
       id: `gas-${Date.now()}`,
       type: "warning",
-      title: "Elevated Gas Concentration",
-      message: `Gas levels are rising (Current: ${data.gasEmission.toFixed(1)} ppm)`,
-      timestamp: new Date().toISOString(),
-      isAcknowledged: false,
-      isFixed: false,
+      title: "High Gas Emission",
+      message: `Gas concentration is elevated (${data.gasEmission.toFixed(1)} ppm)`,
       sensor: "Gas Sensor",
       value: data.gasEmission,
       threshold: 2000,
+      timestamp: new Date().toISOString(),
+      isAcknowledged: false,
+      isFixed: false,
       suggestions: [
         "Ensure ventilation is working",
-        "Monitor gas levels continuously",
-        "Limit occupancy in the area",
-        "Check for minor leaks or emission sources"
+        "Monitor continuously",
+        "Check for potential leakages"
       ],
-      contactInfo: "Notify facilities or safety personnel"
+      contactInfo: "Notify facilities team"
     });
   }
 }
 
-// Gas normal (< 2000) → Mark as fixed if alert still exists
+// Normal level (<2000)
 else {
   if (existingGasAlert && !existingGasAlert.isFixed) {
     markAlertFixed(existingGasAlert.id);
   }
 }
+
 
                   if (data.humidity > 80) {
                     addAlert({
