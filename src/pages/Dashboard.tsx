@@ -92,8 +92,8 @@ const Dashboard = () => {
   };
 
   const getGasStatus = (gas: number): "good" | "warning" | "danger" => {
-    if (gas > 5000) return "danger";
-    if (gas > 2000) return "warning";
+    if (gas > 400) return "danger";
+    if (gas > 300) return "warning";
     return "good";
   };
 
@@ -214,8 +214,8 @@ const Dashboard = () => {
                     unit="ppm"
                     status={getGasStatus(localSensorData.gasEmission)}
                     icon={<AlertTriangle className="h-4 w-4" />}
-                    threshold={{ min: 0, max: 5000 }}
-                    trend={localSensorData.gasEmission > 2000 ? "up" : localSensorData.gasEmission < 1000 ? "down" : "stable"}
+                    threshold={{ min: 0, max: 400 }}
+                    trend={localSensorData.gasEmission > 300 ? "up" : localSensorData.gasEmission < 150 ? "down" : "stable"}
                   />
                   <SensorCard
                     title="Vibration"
@@ -260,7 +260,7 @@ const Dashboard = () => {
                         data={historicalData.gasEmission}
                         unit="ppm"
                         color="hsl(var(--warning))"
-                        threshold={{ max: 5000 }}
+                        threshold={{ max: 400 }}
                       />
                     </div>
                     <div className="grid gap-4 md:grid-cols-2">
@@ -409,68 +409,30 @@ const Dashboard = () => {
                       contactInfo: "Emergency mechanical support required - contact maintenance team"
                     });
                   }
-                  const existingGasDanger = getActiveAlerts().find(
-  (alert) => alert.sensor === "Gas Sensor" && alert.type === "danger"
-);
-
-const existingGasWarning = getActiveAlerts().find(
-  (alert) => alert.sensor === "Gas Sensor" && alert.type === "warning"
-);
-
-
-if (data.gasEmission >= 5000) {
-  if (!existingGasDanger) {
-    addAlert({
-      id: `gas-${Date.now()}`,
-      type: "danger",
-      title: "Critical Gas Emission",
-      message: `Gas concentration is critically high (${data.gasEmission.toFixed(1)} ppm)`,
-      sensor: "Gas Sensor",
-      value: data.gasEmission,
-      threshold: 5000,
-      timestamp: new Date().toISOString(),
-      isAcknowledged: false,
-      isFixed: false,
-      suggestions: [
-        "Evacuate area immediately",
-        "Check gas leakage points",
-        "Activate emergency ventilation"
-      ],
-      contactInfo: "Call safety team immediately"
-    });
-  }
-} else if (data.gasEmission >= 2000) {
-  if (!existingGasWarning) {
-    addAlert({
-      id: `gas-${Date.now()}`,
-      type: "warning",
-      title: "High Gas Emission",
-      message: `Gas concentration is elevated (${data.gasEmission.toFixed(1)} ppm)`,
-      sensor: "Gas Sensor",
-      value: data.gasEmission,
-      threshold: 2000,
-      timestamp: new Date().toISOString(),
-      isAcknowledged: false,
-      isFixed: false,
-      suggestions: [
-        "Ensure ventilation is working",
-        "Monitor continuously",
-        "Check for potential leakages"
-      ],
-      contactInfo: "Notify facilities team"
-    });
-  }
-} else {
-  // Clear both warning and danger if gas is normal
-  if (existingGasDanger && !existingGasDanger.isFixed) {
-    markAlertFixed(existingGasDanger.id);
-  }
-  if (existingGasWarning && !existingGasWarning.isFixed) {
-    markAlertFixed(existingGasWarning.id);
-  }
-}
-
-
+                  if (data.gasEmission > 400) {
+                    addAlert({
+                      id: `gas-${Date.now()}`,
+                      type: "danger",
+                      title: "Hazardous Gas Concentration",
+                      message: `Gas concentration critical (Current: ${data.gasEmission.toFixed(1)} ppm)`,
+                      timestamp: new Date().toISOString(),
+                      isAcknowledged: false,
+                      isFixed: false,
+                      sensor: "Gas Sensor",
+                      value: data.gasEmission,
+                      threshold: 400,
+                      suggestions: [
+                        "Evacuate personnel from affected area immediately",
+                        "Activate emergency ventilation systems",
+                        "Check for gas leaks in piping, valves, and connections",
+                        "Inspect gas detection equipment calibration",
+                        "Monitor air quality continuously with portable detectors",
+                        "Implement confined space entry procedures if applicable",
+                        "Do not operate electrical equipment in affected area"
+                      ],
+                      contactInfo: "Emergency response team - contact safety officer immediately"
+                    });
+                  }
                   if (data.humidity > 80) {
                     addAlert({
                       id: `humidity-${Date.now()}`,
