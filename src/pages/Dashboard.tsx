@@ -92,8 +92,8 @@ const Dashboard = () => {
   };
 
   const getGasStatus = (gas: number): "good" | "warning" | "danger" => {
-    if (gas > 400) return "danger";
-    if (gas > 300) return "warning";
+    if (gas > 5000) return "danger";
+    if (gas > 2000) return "warning";
     return "good";
   };
 
