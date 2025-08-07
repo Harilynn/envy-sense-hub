@@ -409,30 +409,67 @@ const Dashboard = () => {
                       contactInfo: "Emergency mechanical support required - contact maintenance team"
                     });
                   }
-                  if (data.gasEmission > 5000) {
-                    addAlert({
-                      id: `gas-${Date.now()}`,
-                      type: "danger",
-                      title: "Hazardous Gas Concentration",
-                      message: `Gas concentration critical (Current: ${data.gasEmission.toFixed(1)} ppm)`,
-                      timestamp: new Date().toISOString(),
-                      isAcknowledged: false,
-                      isFixed: false,
-                      sensor: "Gas Sensor",
-                      value: data.gasEmission,
-                      threshold: 400,
-                      suggestions: [
-                        "Evacuate personnel from affected area immediately",
-                        "Activate emergency ventilation systems",
-                        "Check for gas leaks in piping, valves, and connections",
-                        "Inspect gas detection equipment calibration",
-                        "Monitor air quality continuously with portable detectors",
-                        "Implement confined space entry procedures if applicable",
-                        "Do not operate electrical equipment in affected area"
-                      ],
-                      contactInfo: "Emergency response team - contact safety officer immediately"
-                    });
-                  }
+                  const existingGasAlert = getActiveAlerts().find(
+  (alert) => alert.sensor === "Gas Sensor"
+);
+
+// Gas > 5000 → Critical
+if (data.gasEmission >= 5000) {
+  if (!existingGasAlert || existingGasAlert.type !== "danger") {
+    addAlert({
+      id: `gas-${Date.now()}`,
+      type: "danger",
+      title: "Critical Gas Concentration",
+      message: `Gas concentration extremely high (Current: ${data.gasEmission.toFixed(1)} ppm)`,
+      timestamp: new Date().toISOString(),
+      isAcknowledged: false,
+      isFixed: false,
+      sensor: "Gas Sensor",
+      value: data.gasEmission,
+      threshold: 5000,
+      suggestions: [
+        "Evacuate area immediately",
+        "Activate emergency ventilation systems",
+        "Check gas detectors and safety valves",
+        "Contact safety officer and emergency response team"
+      ],
+      contactInfo: "Contact safety team immediately"
+    });
+  }
+}
+
+// Gas > 2000 → Warning
+else if (data.gasEmission >= 2000) {
+  if (!existingGasAlert || existingGasAlert.type !== "warning") {
+    addAlert({
+      id: `gas-${Date.now()}`,
+      type: "warning",
+      title: "Elevated Gas Concentration",
+      message: `Gas levels are rising (Current: ${data.gasEmission.toFixed(1)} ppm)`,
+      timestamp: new Date().toISOString(),
+      isAcknowledged: false,
+      isFixed: false,
+      sensor: "Gas Sensor",
+      value: data.gasEmission,
+      threshold: 2000,
+      suggestions: [
+        "Ensure ventilation is working",
+        "Monitor gas levels continuously",
+        "Limit occupancy in the area",
+        "Check for minor leaks or emission sources"
+      ],
+      contactInfo: "Notify facilities or safety personnel"
+    });
+  }
+}
+
+// Gas normal (< 2000) → Mark as fixed if alert still exists
+else {
+  if (existingGasAlert && !existingGasAlert.isFixed) {
+    markAlertFixed(existingGasAlert.id);
+  }
+}
+
                   if (data.humidity > 80) {
                     addAlert({
                       id: `humidity-${Date.now()}`,
