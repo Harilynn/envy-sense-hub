@@ -75,7 +75,7 @@ export const AnalysisReport = ({ sensorData, historicalData, alerts }: AnalysisR
       current: sensorData.gasEmission,
       average: calculateAverage(historicalData.gasEmission),
       trend: calculateTrend(historicalData.gasEmission),
-      status: sensorData.gasEmission > 400 ? "danger" : sensorData.gasEmission > 300 ? "warning" : "good"
+      status: sensorData.gasEmission > 5000 ? "danger" : sensorData.gasEmission > 2000 ? "warning" : "good"
     },
     vibration: {
       current: sensorData.vibration,
