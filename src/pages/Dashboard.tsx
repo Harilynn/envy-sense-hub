@@ -39,7 +39,7 @@ interface LocalSensorData {
 const Dashboard = () => {
   const location = useLocation();
   const isDashboardRoot = location.pathname === "/dashboard";
-  const { getActiveAlerts, getAcknowledgedAlerts, addAlert, acknowledgeAlert, markAlertFixed, addSensorData, clearAlertsBySensor } = useSensorData();
+  const { getActiveAlerts, getAcknowledgedAlerts, addAlert, acknowledgeAlert, markAlertFixed, addSensorData, clearAlertsBySensor, alerts } = useSensorData();
 
   const [localSensorData, setLocalSensorData] = useState<LocalSensorData>(() => {
     const saved = localStorage.getItem('smartmonitor-sensor-data');
@@ -527,7 +527,7 @@ const Dashboard = () => {
               </TabsContent>
 
               <TabsContent value="reports">
-                <AnalysisReport sensorData={localSensorData} historicalData={historicalData} alerts={activeAlerts} />
+                <AnalysisReport sensorData={localSensorData} historicalData={historicalData} alerts={alerts} />
               </TabsContent>
             </Tabs>
           </>
