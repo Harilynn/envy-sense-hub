@@ -98,14 +98,14 @@ Simulate in Wokwi or run on physical hardware.
 bash
 Copy
 Edit
-# Clone repository
+Clone repository
 git clone https://github.com/<your-repo>.git
 cd <your-repo>
 
-# Install dependencies
+Install dependencies
 npm install
 
-# Start development server
+Start development server
 npm run dev
 Paste serial monitor data into the dashboard input.
 
