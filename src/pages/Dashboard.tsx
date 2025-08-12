@@ -78,9 +78,10 @@ const Dashboard = () => {
     return "good";
   };
 
+  // Updated gas status function with new thresholds
   const getGasStatus = (gas: number): "good" | "warning" | "danger" => {
-    if (gas > 400) return "danger";
-    if (gas > 300) return "warning";
+    if (gas >= 5000) return "danger";
+    if (gas >= 2000) return "warning";
     return "good";
   };
 
@@ -201,8 +202,8 @@ const Dashboard = () => {
                     unit="ppm"
                     status={getGasStatus(localSensorData.gasEmission)}
                     icon={<AlertTriangle className="h-4 w-4" />}
-                    threshold={{ min: 0, max: 400 }}
-                    trend={localSensorData.gasEmission > 300 ? "up" : localSensorData.gasEmission < 150 ? "down" : "stable"}
+                    threshold={{ min: 0, max: 5000 }}
+                    trend={localSensorData.gasEmission >= 2000 ? "up" : localSensorData.gasEmission < 1000 ? "down" : "stable"}
                   />
                   <SensorCard
                     title="Vibration"
@@ -247,7 +248,7 @@ const Dashboard = () => {
                         data={historicalData.gasEmission}
                         unit="ppm"
                         color="hsl(var(--warning))"
-                        threshold={{ max: 400 }}
+                        threshold={{ max: 5000 }}
                       />
                     </div>
                     <div className="grid gap-4 md:grid-cols-2">
@@ -330,7 +331,7 @@ const Dashboard = () => {
                   if (data.vibration <= 20000) {
                     clearAlertsBySensor("Vibration Sensor");
                   }
-                  if (data.gasEmission <= 400) {
+                  if (data.gasEmission < 5000) {
                     clearAlertsBySensor("Gas Sensor");
                   }
                   if (data.humidity <= 80) {
@@ -414,18 +415,19 @@ const Dashboard = () => {
                     });
                   }
 
-                  if (data.gasEmission > 400) {
+                  // Updated gas emission alerts with new thresholds
+                  if (data.gasEmission >= 5000) {
                     addAlert({
-                      id: `gas-${Date.now()}`,
+                      id: `gas-danger-${Date.now()}`,
                       type: "danger",
-                      title: "Hazardous Gas Concentration",
-                      message: `Gas concentration critical (Current: ${data.gasEmission.toFixed(1)} ppm)`,
+                      title: "Critical Gas Concentration",
+                      message: `Gas concentration at dangerous levels (Current: ${data.gasEmission.toFixed(1)} ppm)`,
                       timestamp: new Date().toISOString(),
                       isAcknowledged: false,
                       isFixed: false,
                       sensor: "Gas Sensor",
                       value: data.gasEmission,
-                      threshold: 400,
+                      threshold: 5000,
                       suggestions: [
                         "Evacuate personnel from affected area immediately",
                         "Activate emergency ventilation systems",
@@ -437,14 +439,37 @@ const Dashboard = () => {
                       ],
                       contactInfo: "Emergency response team - contact safety officer immediately"
                     });
+                  } else if (data.gasEmission >= 2000) {
+                    addAlert({
+                      id: `gas-warning-${Date.now()}`,
+                      type: "warning",
+                      title: "Elevated Gas Concentration",
+                      message: `Gas concentration above normal levels (Current: ${data.gasEmission.toFixed(1)} ppm)`,
+                      timestamp: new Date().toISOString(),
+                      isAcknowledged: false,
+                      isFixed: false,
+                      sensor: "Gas Sensor",
+                      value: data.gasEmission,
+                      threshold: 2000,
+                      suggestions: [
+                        "Increase ventilation in the affected area",
+                        "Check for minor gas leaks and seal if necessary",
+                        "Monitor gas levels more frequently",
+                        "Ensure personnel are aware of elevated levels",
+                        "Prepare emergency response procedures",
+                        "Consider reducing operations in the area"
+                      ],
+                      contactInfo: "Contact facilities management for investigation"
+                    });
                   }
 
+                  // Fixed humidity alert - changed from "warning" to "danger" when > 80%
                   if (data.humidity > 80) {
                     addAlert({
                       id: `humidity-${Date.now()}`,
-                      type: "warning",
-                      title: "Elevated Humidity Levels",
-                      message: `Humidity exceeds normal range (Current: ${data.humidity.toFixed(1)}%)`,
+                      type: "danger", // Changed from "warning" to "danger"
+                      title: "Critical Humidity Levels",
+                      message: `Humidity at dangerous levels (Current: ${data.humidity.toFixed(1)}%)`,
                       timestamp: new Date().toISOString(),
                       isAcknowledged: false,
                       isFixed: false,
@@ -452,14 +477,15 @@ const Dashboard = () => {
                       value: data.humidity,
                       threshold: 80,
                       suggestions: [
-                        "Increase air circulation using fans or HVAC system",
+                        "Increase air circulation using fans or HVAC system immediately",
                         "Deploy dehumidification equipment in affected areas",
                         "Check for water leaks in pipes, roof, or foundation",
                         "Inspect steam sources and ensure proper ventilation",
                         "Monitor condensation on equipment and surfaces",
-                        "Check humidity sensor calibration and placement"
+                        "Check humidity sensor calibration and placement",
+                        "Consider temporary shutdown of sensitive equipment"
                       ],
-                      contactInfo: "Contact facilities management for HVAC support"
+                      contactInfo: "Contact facilities management for immediate HVAC support"
                     });
                   }
                 }} />
