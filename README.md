@@ -79,19 +79,22 @@ An **ESP32-based IoT system** that continuously tracks **vibration**, **temperat
 ---
 
 ## 📊 System Architecture
-```plaintext
+
 [Sensors] → [ESP32] → [Data Processing & Threshold Detection]
        ↳ [Hardware Alerts: LED, LCD, Buzzer]
        ↳ [Serial Output] → [Web Dashboard]
-🚀 Getting Started
-1️⃣ Hardware Setup
+
+---
+
+## 🚀 Getting Started
+### 1️⃣ Hardware Setup
 Connect ESP32 with DHT22, MPU6050, ACS712, MQ2.
 
 Upload Arduino code (includes threshold-based alerts).
 
 Simulate in Wokwi or run on physical hardware.
 
-2️⃣ Web Dashboard Setup
+### 2️⃣ Web Dashboard Setup
 bash
 Copy
 Edit
@@ -108,14 +111,14 @@ Paste serial monitor data into the dashboard input.
 
 Monitor live readings & download reports.
 
-📌 Use Cases
+## 📌 Use Cases
 MSME Factories — Affordable predictive maintenance
 
 Training Labs — Teaching IoT & Industry 4.0 concepts
 
 Pilot Projects — Testing before large-scale deployment
 
-🔮 Future Improvements
+## 🔮 Future Improvements
 Direct serial-to-web integration (no manual copy-paste)
 
 AI/ML-based predictive maintenance insights
@@ -124,7 +127,7 @@ Mobile app with push notifications
 
 Integration with cloud IoT platforms (AWS IoT, Azure IoT)
 
-👩‍💻 Team
+## 👩‍💻 Team
 Team Jupiter — IGDTUW
 
 Harleen Kaur
