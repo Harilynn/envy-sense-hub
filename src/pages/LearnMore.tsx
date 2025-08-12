@@ -285,7 +285,7 @@ export default function LearnMore() {
           <Button 
             size="lg" 
             asChild 
-            className="bg-gradient-primary text-white font-semibold shadow-lg transform transition-all duration-200 hover:scale-105 hover:bg-gradient-primary/80 hover:shadow-xl border-0"
+            className="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-500 hover:to-cyan-500 text-white font-semibold shadow-lg transform transition-all duration-200 hover:scale-105 border-0"
           >
             <Link to="/dashboard">
               Start Monitoring Now
