@@ -338,189 +338,187 @@ const Dashboard = () => {
                 />
 
                 {/* Data Bridge */}
-                <DataBridge onDataReceived={(data) => {
-                  const newSensorData = { ...data };
-                  setLocalSensorData(newSensorData);
-                  
-                  // Persist to localStorage
-                  localStorage.setItem('smartmonitor-sensor-data', JSON.stringify(newSensorData));
-                  
-                  // Clear alerts if sensors return to normal values
-                  clearAlertsIfNormal(newSensorData);
-                  
-                  // Persist current alerts to localStorage
-                  const allAlerts = [...getActiveAlerts(), ...getAcknowledgedAlerts()];
-                  localStorage.setItem('smartmonitor-alerts', JSON.stringify(allAlerts));
-                  
-                  // Add to context
-                  addSensorData({
-                    id: `sensor-${Date.now()}`,
-                    timestamp: data.timestamp.toISOString(),
-                    temperature: data.temperature,
-                    humidity: data.humidity,
-                    current: data.current,
-                    vibration: data.vibration,
-                    gas_emission: data.gasEmission,
-                    device_id: "ESP32-001"
-                  });
-                  
-                  const timeStr = data.timestamp.toLocaleTimeString('en-US', { 
-                    hour12: false, 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                  });
+                // Replace your Dashboard's DataBridge onDataReceived with this:
 
-                  const newHistoricalData = {
-                    temperature: [...historicalData.temperature.slice(-19), { timestamp: timeStr, value: data.temperature }],
-                    humidity: [...historicalData.humidity.slice(-19), { timestamp: timeStr, value: data.humidity }],
-                    gasEmission: [...historicalData.gasEmission.slice(-19), { timestamp: timeStr, value: data.gasEmission }],
-                    vibration: [...historicalData.vibration.slice(-19), { timestamp: timeStr, value: data.vibration }],
-                    current: [...historicalData.current.slice(-19), { timestamp: timeStr, value: data.current }]
-                  };
-                  
-                  setHistoricalData(newHistoricalData);
-                  localStorage.setItem('smartmonitor-historical-data', JSON.stringify(newHistoricalData));
+<DataBridge onDataReceived={(data) => {
+  const newSensorData = { ...data };
+  setLocalSensorData(newSensorData);
+  
+  // Persist to localStorage
+  localStorage.setItem('smartmonitor-sensor-data', JSON.stringify(newSensorData));
+  
+  // Add to context
+  addSensorData({
+    id: `sensor-${Date.now()}`,
+    timestamp: data.timestamp.toISOString(),
+    temperature: data.temperature,
+    humidity: data.humidity,
+    current: data.current,
+    vibration: data.vibration,
+    gas_emission: data.gasEmission,
+    device_id: "ESP32-001"
+  });
+  
+  const timeStr = data.timestamp.toLocaleTimeString('en-US', { 
+    hour12: false, 
+    hour: '2-digit', 
+    minute: '2-digit' 
+  });
 
-                  // ---- IMPROVED ALERT GENERATION WITH DUPLICATE PREVENTION ----
-                  
-                  // Temperature Alert
-                  createAlertIfNeeded({
-                    sensorName: "Temperature Sensor",
-                    condition: data.temperature > 60,
-                    alertData: {
-                      id: `temp-${Date.now()}`,
-                      type: "danger",
-                      title: "Critical Temperature Alert",
-                      message: `Temperature exceeded 60°C (Current: ${data.temperature.toFixed(1)}°C)`,
-                      timestamp: new Date().toISOString(),
-                      isAcknowledged: false,
-                      isFixed: false,
-                      sensor: "Temperature Sensor",
-                      value: data.temperature,
-                      threshold: 60,
-                      suggestions: [
-                        "Immediately check cooling system operation and coolant levels",
-                        "Reduce machine load by 50% to lower heat generation",
-                        "Ensure proper ventilation and air circulation around equipment",
-                        "Inspect heat exchangers for blockages or fouling",
-                        "Consider emergency shutdown if temperature continues to rise",
-                        "Check for mechanical friction or binding in moving parts"
-                      ],
-                      contactInfo: "For emergency support, contact our technical team immediately"
-                    }
-                  });
+  const newHistoricalData = {
+    temperature: [...historicalData.temperature.slice(-19), { timestamp: timeStr, value: data.temperature }],
+    humidity: [...historicalData.humidity.slice(-19), { timestamp: timeStr, value: data.humidity }],
+    gasEmission: [...historicalData.gasEmission.slice(-19), { timestamp: timeStr, value: data.gasEmission }],
+    vibration: [...historicalData.vibration.slice(-19), { timestamp: timeStr, value: data.vibration }],
+    current: [...historicalData.current.slice(-19), { timestamp: timeStr, value: data.current }]
+  };
+  
+  setHistoricalData(newHistoricalData);
+  localStorage.setItem('smartmonitor-historical-data', JSON.stringify(newHistoricalData));
 
-                  // Current Alert
-                  createAlertIfNeeded({
-                    sensorName: "Current Sensor",
-                    condition: data.current > 2.5,
-                    alertData: {
-                      id: `current-${Date.now()}`,
-                      type: "danger", 
-                      title: "Electrical Current Overload",
-                      message: `Current exceeded safe threshold (Current: ${data.current.toFixed(1)} A)`,
-                      timestamp: new Date().toISOString(),
-                      isAcknowledged: false,
-                      isFixed: false,
-                      sensor: "Current Sensor",
-                      value: data.current,
-                      threshold: 2.5,
-                      suggestions: [
-                        "Immediately check all electrical connections for looseness",
-                        "Inspect motor windings for signs of damage or overheating",
-                        "Look for short circuits in wiring or control panels",
-                        "Check mechanical load on motor for binding or obstruction",
-                        "Reduce operational speed to decrease current draw",
-                        "Test insulation resistance of motor windings",
-                        "Consider temporary load reduction until issue is resolved"
-                      ],
-                      contactInfo: "Contact certified electrician for electrical system inspection"
-                    }
-                  });
+  // ---- AUTO-CLEAR ALERTS WHEN SENSORS RETURN TO NORMAL ----
+  if (data.temperature <= 60) {
+    clearAlertsBySensor("Temperature Sensor");
+  }
+  if (data.current <= 2.5) {
+    clearAlertsBySensor("Current Sensor");
+  }
+  if (data.vibration <= 20000) {
+    clearAlertsBySensor("Vibration Sensor");
+  }
+  if (data.gasEmission <= 400) {
+    clearAlertsBySensor("Gas Sensor");
+  }
+  if (data.humidity <= 80) {
+    clearAlertsBySensor("Humidity Sensor");
+  }
 
-                  // Vibration Alert
-                  createAlertIfNeeded({
-                    sensorName: "Vibration Sensor",
-                    condition: data.vibration > 20000,
-                    alertData: {
-                      id: `vibration-${Date.now()}`,
-                      type: "danger",
-                      title: "Critical Vibration Level", 
-                      message: `Excessive vibrations detected (Current: ${data.vibration.toFixed(0)})`,
-                      timestamp: new Date().toISOString(),
-                      isAcknowledged: false,
-                      isFixed: false,
-                      sensor: "Vibration Sensor",
-                      value: data.vibration,
-                      threshold: 20000,
-                      suggestions: [
-                        "Stop operation immediately to prevent catastrophic failure",
-                        "Inspect all bearings for wear, damage, or inadequate lubrication",
-                        "Check shaft alignment using precision alignment tools",
-                        "Examine mounting bolts and foundation for looseness",
-                        "Look for signs of component wear, cracking, or fatigue",
-                        "Check balance of rotating components",
-                        "Schedule immediate professional vibration analysis"
-                      ],
-                      contactInfo: "Emergency mechanical support required - contact maintenance team"
-                    }
-                  });
+  // ---- GENERATE ALERTS FOR THRESHOLD VIOLATIONS ----
+  // The context's addAlert function will now prevent duplicates automatically
+  
+  if (data.temperature > 60) {
+    addAlert({
+      id: `temp-${Date.now()}`,
+      type: "danger",
+      title: "Critical Temperature Alert",
+      message: `Temperature exceeded 60°C (Current: ${data.temperature.toFixed(1)}°C)`,
+      timestamp: new Date().toISOString(),
+      isAcknowledged: false,
+      isFixed: false,
+      sensor: "Temperature Sensor",
+      value: data.temperature,
+      threshold: 60,
+      suggestions: [
+        "Immediately check cooling system operation and coolant levels",
+        "Reduce machine load by 50% to lower heat generation",
+        "Ensure proper ventilation and air circulation around equipment",
+        "Inspect heat exchangers for blockages or fouling",
+        "Consider emergency shutdown if temperature continues to rise",
+        "Check for mechanical friction or binding in moving parts"
+      ],
+      contactInfo: "For emergency support, contact our technical team immediately"
+    });
+  }
 
-                  // Gas Alert
-                  createAlertIfNeeded({
-                    sensorName: "Gas Sensor",
-                    condition: data.gasEmission > 400,
-                    alertData: {
-                      id: `gas-${Date.now()}`,
-                      type: "danger",
-                      title: "Hazardous Gas Concentration",
-                      message: `Gas concentration critical (Current: ${data.gasEmission.toFixed(1)} ppm)`,
-                      timestamp: new Date().toISOString(),
-                      isAcknowledged: false,
-                      isFixed: false,
-                      sensor: "Gas Sensor",
-                      value: data.gasEmission,
-                      threshold: 400,
-                      suggestions: [
-                        "Evacuate personnel from affected area immediately",
-                        "Activate emergency ventilation systems",
-                        "Check for gas leaks in piping, valves, and connections",
-                        "Inspect gas detection equipment calibration",
-                        "Monitor air quality continuously with portable detectors",
-                        "Implement confined space entry procedures if applicable",
-                        "Do not operate electrical equipment in affected area"
-                      ],
-                      contactInfo: "Emergency response team - contact safety officer immediately"
-                    }
-                  });
+  if (data.current > 2.5) {
+    addAlert({
+      id: `current-${Date.now()}`,
+      type: "danger", 
+      title: "Electrical Current Overload",
+      message: `Current exceeded safe threshold (Current: ${data.current.toFixed(1)} A)`,
+      timestamp: new Date().toISOString(),
+      isAcknowledged: false,
+      isFixed: false,
+      sensor: "Current Sensor",
+      value: data.current,
+      threshold: 2.5,
+      suggestions: [
+        "Immediately check all electrical connections for looseness",
+        "Inspect motor windings for signs of damage or overheating",
+        "Look for short circuits in wiring or control panels",
+        "Check mechanical load on motor for binding or obstruction",
+        "Reduce operational speed to decrease current draw",
+        "Test insulation resistance of motor windings",
+        "Consider temporary load reduction until issue is resolved"
+      ],
+      contactInfo: "Contact certified electrician for electrical system inspection"
+    });
+  }
 
-                  // Humidity Alert
-                  createAlertIfNeeded({
-                    sensorName: "Humidity Sensor",
-                    condition: data.humidity > 80,
-                    alertData: {
-                      id: `humidity-${Date.now()}`,
-                      type: "warning",
-                      title: "Elevated Humidity Levels",
-                      message: `Humidity exceeds normal range (Current: ${data.humidity.toFixed(1)}%)`,
-                      timestamp: new Date().toISOString(),
-                      isAcknowledged: false,
-                      isFixed: false,
-                      sensor: "Humidity Sensor",
-                      value: data.humidity,
-                      threshold: 80,
-                      suggestions: [
-                        "Increase air circulation using fans or HVAC system",
-                        "Deploy dehumidification equipment in affected areas",
-                        "Check for water leaks in pipes, roof, or foundation",
-                        "Inspect steam sources and ensure proper ventilation",
-                        "Monitor condensation on equipment and surfaces",
-                        "Check humidity sensor calibration and placement"
-                      ],
-                      contactInfo: "Contact facilities management for HVAC support"
-                    }
-                  });
-                }} />
+  if (data.vibration > 20000) {
+    addAlert({
+      id: `vibration-${Date.now()}`,
+      type: "danger",
+      title: "Critical Vibration Level", 
+      message: `Excessive vibrations detected (Current: ${data.vibration.toFixed(0)})`,
+      timestamp: new Date().toISOString(),
+      isAcknowledged: false,
+      isFixed: false,
+      sensor: "Vibration Sensor",
+      value: data.vibration,
+      threshold: 20000,
+      suggestions: [
+        "Stop operation immediately to prevent catastrophic failure",
+        "Inspect all bearings for wear, damage, or inadequate lubrication",
+        "Check shaft alignment using precision alignment tools",
+        "Examine mounting bolts and foundation for looseness",
+        "Look for signs of component wear, cracking, or fatigue",
+        "Check balance of rotating components",
+        "Schedule immediate professional vibration analysis"
+      ],
+      contactInfo: "Emergency mechanical support required - contact maintenance team"
+    });
+  }
+
+  if (data.gasEmission > 400) {
+    addAlert({
+      id: `gas-${Date.now()}`,
+      type: "danger",
+      title: "Hazardous Gas Concentration",
+      message: `Gas concentration critical (Current: ${data.gasEmission.toFixed(1)} ppm)`,
+      timestamp: new Date().toISOString(),
+      isAcknowledged: false,
+      isFixed: false,
+      sensor: "Gas Sensor",
+      value: data.gasEmission,
+      threshold: 400,
+      suggestions: [
+        "Evacuate personnel from affected area immediately",
+        "Activate emergency ventilation systems",
+        "Check for gas leaks in piping, valves, and connections",
+        "Inspect gas detection equipment calibration",
+        "Monitor air quality continuously with portable detectors",
+        "Implement confined space entry procedures if applicable",
+        "Do not operate electrical equipment in affected area"
+      ],
+      contactInfo: "Emergency response team - contact safety officer immediately"
+    });
+  }
+
+  if (data.humidity > 80) {
+    addAlert({
+      id: `humidity-${Date.now()}`,
+      type: "warning",
+      title: "Elevated Humidity Levels",
+      message: `Humidity exceeds normal range (Current: ${data.humidity.toFixed(1)}%)`,
+      timestamp: new Date().toISOString(),
+      isAcknowledged: false,
+      isFixed: false,
+      sensor: "Humidity Sensor",
+      value: data.humidity,
+      threshold: 80,
+      suggestions: [
+        "Increase air circulation using fans or HVAC system",
+        "Deploy dehumidification equipment in affected areas",
+        "Check for water leaks in pipes, roof, or foundation",
+        "Inspect steam sources and ensure proper ventilation",
+        "Monitor condensation on equipment and surfaces",
+        "Check humidity sensor calibration and placement"
+      ],
+      contactInfo: "Contact facilities management for HVAC support"
+    });
+  }
+}} />
 
                 {/* System Status */}
                 <Card>
