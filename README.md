@@ -95,9 +95,7 @@ Upload Arduino code (includes threshold-based alerts).
 Simulate in Wokwi or run on physical hardware.
 
 ### 2️⃣ Web Dashboard Setup
-bash
-Copy
-Edit
+```
 Clone repository
 git clone https://github.com/<your-repo>.git
 cd <your-repo>
@@ -107,6 +105,7 @@ npm install
 
 Start development server
 npm run dev
+```
 Paste serial monitor data into the dashboard input.
 
 Monitor live readings & download reports.
