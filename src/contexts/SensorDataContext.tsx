@@ -33,6 +33,7 @@ interface SensorDataContextType {
   addAlert: (alert: Alert) => void;
   acknowledgeAlert: (alertId: string) => void;
   markAlertFixed: (alertId: string) => void;
+  clearAlertsBySensor: (sensorName: string) => void;
   getActiveAlerts: () => Alert[];
   getAcknowledgedAlerts: () => Alert[];
 }
@@ -52,6 +53,7 @@ export const SensorDataProvider: React.FC<{ children: ReactNode }> = ({ children
     const saved = localStorage.getItem('sensorData');
     return saved ? JSON.parse(saved) : [];
   });
+
   const [alerts, setAlerts] = useState<Alert[]>(() => {
     const saved = localStorage.getItem('alerts');
     return saved ? JSON.parse(saved) : [];
@@ -67,6 +69,19 @@ export const SensorDataProvider: React.FC<{ children: ReactNode }> = ({ children
 
   const addAlert = (alert: Alert) => {
     setAlerts(prev => {
+      // Check if an active alert for this sensor already exists
+      const hasActiveAlert = prev.some(existingAlert => 
+        existingAlert.sensor === alert.sensor && 
+        !existingAlert.isAcknowledged && 
+        !existingAlert.isFixed
+      );
+
+      if (hasActiveAlert) {
+        console.log(`Alert already exists for ${alert.sensor}, skipping duplicate`);
+        return prev; // Don't add duplicate alert
+      }
+
+      console.log(`Adding new alert for ${alert.sensor}`);
       const updated = [...prev, alert];
       localStorage.setItem('alerts', JSON.stringify(updated));
       return updated;
@@ -93,6 +108,19 @@ export const SensorDataProvider: React.FC<{ children: ReactNode }> = ({ children
     });
   };
 
+  // New function to clear alerts by sensor when values return to normal
+  const clearAlertsBySensor = (sensorName: string) => {
+    setAlerts(prev => {
+      const updated = prev.map(alert => 
+        alert.sensor === sensorName && !alert.isAcknowledged && !alert.isFixed
+          ? { ...alert, isFixed: true }
+          : alert
+      );
+      localStorage.setItem('alerts', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   const getActiveAlerts = () => {
     return alerts.filter(alert => !alert.isAcknowledged && !alert.isFixed);
   };
@@ -110,6 +138,7 @@ export const SensorDataProvider: React.FC<{ children: ReactNode }> = ({ children
         addAlert,
         acknowledgeAlert,
         markAlertFixed,
+        clearAlertsBySensor,
         getActiveAlerts,
         getAcknowledgedAlerts,
       }}
